@@ -10,9 +10,9 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 ![Windows desktop](./windows/images/desktop.png)
 
 - **[Wallpaper Engine](https://store.steampowered.com/app/431960)**
-- **[Windhawk](https://github.com/ramensoftware/windhawk)**
-- **[YASB](https://github.com/amnweb/yasb)**
-- **[Fastfetch](https://github.com/fastfetch-cli/fastfetch)**
+- **[Windhawk](https://windhawk.net)**
+- **[YASB](https://github.com/amnweb/yasb?tab=readme-ov-file#installation)**
+- **[Fastfetch](https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows)**
 
 ## YASB auto-start
 
