@@ -5,10 +5,6 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 - **[Fira Code](https://github.com/ryanoasis/nerd-fonts/releases/latest)**
 - **[JetBrains Mono](https://github.com/ryanoasis/nerd-fonts/releases/latest)**
 
-## Wallpaper
-- [Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=1382838434)
-- [Static](./images/wallpaper-static.jpg) ([original](https://www.pexels.com/photo/grayscale-photography-of-mountain-234272/))
-
 ## Windows
 
 ![Windows desktop](./windows/images/desktop.png)
@@ -17,6 +13,10 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 - **[Windhawk](https://github.com/ramensoftware/windhawk)**
 - **[YASB](https://github.com/amnweb/yasb)**
 - **[Fastfetch](https://github.com/fastfetch-cli/fastfetch)**
+
+### Wallpaper
+- [Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=1382838434)
+- [Static](./images/wallpaper-static.jpg) ([original](https://www.pexels.com/photo/grayscale-photography-of-mountain-234272/))
 
 ### Windows Terminal [color scheme](https://windowsterminalthemes.dev/?theme=OneDark)
 
