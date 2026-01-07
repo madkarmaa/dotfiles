@@ -14,6 +14,14 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 - **[YASB](https://github.com/amnweb/yasb)**
 - **[Fastfetch](https://github.com/fastfetch-cli/fastfetch)**
 
+## YASB auto-start
+
+Paste this command in an admin PowerShell session to auto-start YASB at user logon.
+
+```pwsh
+schtasks /create /f /rl highest /sc onlogon /tn "YASB" /tr 'cmd.exe /c start "" /high "C:\Program Files\YASB\yasb.exe"'
+```
+
 ### Wallpaper
 - [Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=1382838434)
 - [Static](./images/wallpaper-static.jpg) ([original](https://www.pexels.com/photo/grayscale-photography-of-mountain-234272/))
