@@ -18,7 +18,7 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 
 Paste this command in an admin PowerShell session to auto-start YASB at user logon with high priority.
 
-```pwsh
+```
 schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start "" /high "C:\Program Files\YASB\yasb.exe"'
 ```
 
@@ -45,7 +45,7 @@ Learn how to install the color scheme [here](https://learn.microsoft.com/en-us/w
 
 Run this command to automatically apply the configurations:
 
-```pwsh
+```
 git clone https://github.com/madkarmaa/dotfiles
 cd .\dotfiles\windows\scripts
 .\apply.ps1 # yasb, powershell, fastfetch, all
