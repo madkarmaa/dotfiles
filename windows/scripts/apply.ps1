@@ -56,7 +56,7 @@ function ApplyYasb {
     Get-Process -Name yasb -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Process yasb
 
-    Write-Host "✅ yasb applied" -ForegroundColor Green
+    Write-Host "✅ YASB applied" -ForegroundColor Green
 }
 
 function ApplyPowerShell {
@@ -77,13 +77,44 @@ function ApplyFastfetch {
 
     Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
 
-    Write-Host "✅ fastfetch applied" -ForegroundColor Green
+    Write-Host "✅ Fastfetch applied" -ForegroundColor Green
 }
 
 function ApplyPowerToys {
     Write-Host "Installing PowerToys..."
     # https://learn.microsoft.com/en-us/windows/powertoys/install#install-with-windows-package-manager
     winget install --id Microsoft.PowerToys --source winget
+
+    Write-Host "Applying PowerToys configuration..."
+
+    $nowDt = [DateTime]::UtcNow
+    $nowFt = $nowDt.ToFileTimeUtc()
+
+    $dest = Join-Path (New-DestDir "$env:USERPROFILE\Documents\PowerToys\Backup") "settings_$nowFt.ptb"
+
+    Copy-Item "$PSScriptRoot\..\powertoys\backup.ptb" -Destination $dest -Force
+
+    $item = Get-Item $dest
+    $item.CreationTimeUtc  = $nowDt
+    $item.LastWriteTimeUtc = $nowDt
+    $item.LastAccessTimeUtc = $nowDt
+
+    # if powertoys settings is executed as admin, it'll re-launch as non-admin immediately
+    # which will trick Wait-Process into thinking it's done before the window is actually shown to the user
+    # so we open the settings via explorer.exe and try to intercept the process instead
+    Start-Process explorer.exe -ArgumentList "C:\Program Files\PowerToys\WinUI3Apps\PowerToys.Settings.exe"
+
+    $RETRIES = 15
+    for ($i = 0; $i -lt $RETRIES; $i++) {
+        $proc = Get-Process -Name PowerToys.Settings -ErrorAction SilentlyContinue
+        if ($proc) {
+            $proc | Wait-Process
+            break
+        }
+        Start-Sleep -Seconds 1
+    }
+
+    Write-Host "✅ PowerToys applied" -ForegroundColor Green
 }
 
 function IsAdmin {
