@@ -41,4 +41,14 @@ Learn how to install the color scheme [here](https://learn.microsoft.com/en-us/w
 | ![Taskbar Tray System Icon Tweaks](./windows/images/windhawk/taskbar-tray-system-icon-tweaks.png) | ![Windows 11 Notification Center Styler](./windows/images/windhawk/windows-11-notification-center-styler.png) |
 | ![Windows 11 Start Menu Styler](./windows/images/windhawk/windows-11-start-menu-styler.png) | ![Windows 11 Taskbar Styler](./windows/images/windhawk/windows-11-taskbar-styler.png) |
 
+### 🚀 Apply configurations
+
+Run this command to automatically apply the configurations:
+
+```pwsh
+git clone https://github.com/madkarmaa/dotfiles
+cd .\dotfiles\windows\scripts
+.\apply.ps1 # yasb, powershell, fastfetch, all
+```
+
 <small><i>First time ricing, I hope you like it :P</i></small>
