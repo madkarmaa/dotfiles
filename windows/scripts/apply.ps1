@@ -34,7 +34,8 @@ function TaskbarAutoHide {
 
 function ApplyYasb {
     Write-Host "Installing YASB..."
-    winget install --id AmN.yasb # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
+    # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
+    winget install --id AmN.yasb
 
     Write-Host "Applying yasb configuration..."
 
@@ -69,7 +70,8 @@ function ApplyPowerShell {
 
 function ApplyFastfetch {
     Write-Host "Installing fastfetch..."
-    winget install fastfetch # https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows
+    # https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows
+    winget install fastfetch
 
     Write-Host "Applying fastfetch configuration..."
 
@@ -80,6 +82,7 @@ function ApplyFastfetch {
 
 function ApplyPowerToys {
     Write-Host "Installing PowerToys..."
+    # https://learn.microsoft.com/en-us/windows/powertoys/install#install-with-windows-package-manager
     winget install --id Microsoft.PowerToys --source winget
 }
 
