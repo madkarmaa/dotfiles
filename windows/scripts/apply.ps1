@@ -82,7 +82,7 @@ function ApplyYasb {
     Get-Process -Name yasb -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Process yasb
 
-    Success "YASB applied"
+    Success "YASB configuration applied"
 }
 
 function ApplyPowerShell {
@@ -102,7 +102,7 @@ function ApplyFastfetch {
     Info "Applying fastfetch configuration..."
     Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
 
-    Success "Fastfetch applied"
+    Success "Fastfetch configuration applied"
 }
 
 function ApplyPowerToys {
@@ -142,7 +142,7 @@ function ApplyPowerToys {
         Start-Sleep -Seconds 1
     }
 
-    Success "PowerToys applied"
+    Success "PowerToys configuration applied"
 }
 
 function IsAdmin {
