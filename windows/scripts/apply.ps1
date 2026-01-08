@@ -4,37 +4,6 @@ param (
     [string]$Feature = "all"
 )
 
-$TASK_TEMPLATE = @"
-<?xml version="1.0" encoding="UTF-16"?>
-<Task version="1.3" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
-    <Triggers>
-        <LogonTrigger>
-            <UserId>{{user}}</UserId>
-        </LogonTrigger>
-    </Triggers>
-    <Principals>
-        <Principal>
-            <UserId>{{user}}</UserId>
-            <RunLevel>HighestAvailable</RunLevel>
-        </Principal>
-    </Principals>
-    <Settings>
-        <AllowStartOnDemand>true</AllowStartOnDemand>
-        <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
-        <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
-        <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
-        <Enabled>true</Enabled>
-        <Hidden>false</Hidden>
-    </Settings>
-    <Actions>
-        <Exec>
-            <Command>cmd.exe</Command>
-            <Arguments>/c start "" /high "C:\Program Files\YASB\yasb.exe"</Arguments>
-        </Exec>
-    </Actions>
-</Task>
-"@
-
 function New-DestDir {
     param (
         [Parameter(Mandatory = $true)]
@@ -68,7 +37,7 @@ function ApplyYasb {
 
     $user = "$env:USERDOMAIN\$env:USERNAME";
 
-    $xmlContent = $TASK_TEMPLATE.Trim() -replace "{{user}}", $user
+    $xmlContent = (Get-Content "$PSScriptRoot\YASB.xml").Trim().Replace("{{user}}", $user)
     $xmlPath = "$env:TEMP\yasb_task.xml"
     $xmlContent | Out-File -FilePath $xmlPath -Encoding Unicode
 
