@@ -104,6 +104,9 @@ function ApplyPowerToys {
     # so we open the settings via explorer.exe and try to intercept the process instead
     Start-Process explorer.exe -ArgumentList "C:\Program Files\PowerToys\WinUI3Apps\PowerToys.Settings.exe"
 
+    Write-Host "Please restore the settings from the PowerToys Settings window that just opened, under General > Backup & Restore" -ForegroundColor Black -BackgroundColor Yellow
+    Write-Host "After restoring, close the PowerToys Settings window to continue..." -ForegroundColor Black -BackgroundColor Yellow
+
     $RETRIES = 15
     for ($i = 0; $i -lt $RETRIES; $i++) {
         $proc = Get-Process -Name PowerToys.Settings -ErrorAction SilentlyContinue
