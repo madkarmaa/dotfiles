@@ -105,8 +105,7 @@ function ApplyYasb {
     TaskbarAutoHide -Enable $true
 
     # reload yasb or else the windows' top bar will be shown under it
-    Get-Process -Name yasb -ErrorAction SilentlyContinue | Stop-Process -Force
-    Start-Process yasb
+    yasbc.exe reload
 
     Success "YASB configuration applied"
 }
