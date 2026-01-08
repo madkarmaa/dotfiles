@@ -1,6 +1,6 @@
 param (
     [Parameter(Position = 0)]
-    [ValidateSet("yasb", "powershell", "fastfetch", "powertoys", "all")]
+    [ValidateSet("yasb", "powershell", "fastfetch", "cava", "powertoys", "all")]
     [string]$Feature = "all"
 )
 
@@ -31,6 +31,15 @@ function Warning {
     Write-Host "[!] $Message" -ForegroundColor Black -BackgroundColor Yellow
 }
 
+function Failure {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Message
+    )
+
+    Write-Host "[-] $Message" -ForegroundColor White -BackgroundColor Red
+}
+
 function New-DestDir {
     param (
         [Parameter(Mandatory = $true)]
@@ -39,6 +48,23 @@ function New-DestDir {
 
     $dir = New-Item -Force -Type Directory -Path $Path
     return $dir.FullName
+}
+
+function AddToUserPath {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$NewPath
+    )
+
+    $currentPath = [Environment]::GetEnvironmentVariable("Path", "User")
+
+    if ($currentPath.Split(';') -notcontains $NewPath) {
+        $updatedPath = "$currentPath;$NewPath"
+        [Environment]::SetEnvironmentVariable("Path", $updatedPath, "User")
+        Success "Added '$NewPath' to user PATH"
+    } else {
+        Info "'$NewPath' is already in user PATH"
+    }
 }
 
 function TaskbarAutoHide {
@@ -145,6 +171,38 @@ function ApplyPowerToys {
     Success "PowerToys configuration applied"
 }
 
+function ApplyCava {
+    $isCavaInstalled = Get-Command cava -ErrorAction SilentlyContinue
+
+    if (-not $isCavaInstalled) {
+        Info "Installing Cava..."
+
+        $release = Invoke-RestMethod -Uri "https://api.github.com/repos/karlstav/cava/releases/latest"
+        $asset = $release.assets | Where-Object { $_.name -eq "cava_win_x64_install.exe" }
+
+        if (-not $asset) {
+            Failure "cava_win_x64_install.exe not found in the latest release"
+            return
+        }
+
+        $outputPath = "$env:TEMP\cava_win_x64_install.exe"
+        Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $outputPath
+        Start-Process -FilePath $outputPath -Wait
+    } else {
+        Info "Cava is already installed"
+    }
+
+    # add cava to user path even if already installed to ensure it's there
+    AddToUserPath -NewPath "$env:LOCALAPPDATA\Programs\cava"
+
+    Info "Installing Microsoft Visual C++ 2012 Redistributable..."
+    winget install -e --id Microsoft.VCRedist.2012.x64
+
+    Info "Applying Cava configuration..."
+    Copy-Item "$PSScriptRoot\..\cava\config" -Destination (New-DestDir "$env:USERPROFILE\.config\cava") -Force
+    Success "Cava configuration applied"
+}
+
 function IsAdmin {
     return ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
@@ -177,19 +235,26 @@ if (-not (IsAdmin)) {
     RelaunchScript -ScriptPath $MyInvocation.MyCommand.Path -BoundParameters $MyInvocation.BoundParameters -UnboundArguments $args
 }
 
+$OriginalProgressPreference = $ProgressPreference
+$ProgressPreference = "SilentlyContinue"
+
 switch ($Feature) {
     "yasb" { ApplyYasb }
     "powershell" { ApplyPowerShell }
     "fastfetch" { ApplyFastfetch }
+    "cava" { ApplyCava }
     "powertoys" { ApplyPowerToys }
     "all" {
         ApplyYasb
         ApplyPowerShell
         ApplyFastfetch
+        ApplyCava
         ApplyPowerToys
         Success "All configurations applied successfully!"
     }
 }
+
+$ProgressPreference = $OriginalProgressPreference
 
 Write-Host "`nPress any key to exit..."
 [void][System.Console]::ReadKey($true)

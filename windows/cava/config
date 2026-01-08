@@ -1,0 +1,9 @@
+[output]
+method = noncurses
+
+[color]
+foreground = '#7a9d8f'
+
+[smoothing]
+monstercat = 1
+noise_reduction = 88

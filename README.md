@@ -16,7 +16,9 @@ Run this command in an **admin** PowerShell session to automatically install the
 ```
 git clone https://github.com/madkarmaa/dotfiles --depth 1
 cd .\dotfiles\windows\scripts
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # yasb, powershell, fastfetch, powertoys, all (defaults to all)
+
+# yasb, powershell, fastfetch, cava, powertoys, all (defaults to all)
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all"
 ```
 
 ![Apply script](./windows/images/apply-script.png)
@@ -27,6 +29,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # y
 - **[Windhawk](https://windhawk.net)**
 - **[YASB](https://github.com/amnweb/yasb?tab=readme-ov-file#winget)**
 - **[Fastfetch](https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#:~:text=winget%3A%20winget%20install%20fastfetch)**
+- **[Cava](https://github.com/karlstav/cava/releases/latest)**
 - **[PowerToys](https://learn.microsoft.com/en-us/windows/powertoys/install#install-with-windows-package-manager)**
 
 ### 🖼️ Wallpaper
