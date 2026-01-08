@@ -34,7 +34,7 @@ bars:
         widgets:
             left: ['active_window']
             center: ['clock']
-            right: ['media', 'taskbar', 'volume', 'apps']
+            right: ['media', 'taskbar', 'volume', 'brightness', 'apps']
 widgets:
     media:
         type: 'yasb.media.MediaWidget'
@@ -128,7 +128,26 @@ widgets:
                 - "\uf027" # Icon for 31-60% volume
                 - "\uf028" # Icon for 61-100% volume
             callbacks:
-                on_right: 'exec cmd.exe /c start ms-settings:sound'
+                on_right: 'toggle_mute'
+    brightness:
+        type: 'yasb.brightness.BrightnessWidget'
+        options:
+            label: '<span>{icon}</span> {percent}%'
+            brightness_icons: [
+                    "\udb80\udcde", # Icon for 0-25% brightness
+                    "\udb80\udcdd", # Icon for 26-50% brightness
+                    "\udb80\udcdf", # Icon for 51-75% brightness
+                    "\udb80\udce0", # Icon for 76-100% brightness
+                ]
+            brightness_menu:
+                blur: true
+                round_corners: true
+                round_corners_type: 'normal'
+                border_color: 'System'
+                alignment: 'right'
+                direction: 'down'
+            callbacks:
+                on_left: 'toggle_brightness_menu'
     apps:
         type: 'yasb.applications.ApplicationsWidget'
         options:
