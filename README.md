@@ -47,7 +47,7 @@ schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /
 | ![Taskbar Tray System Icon Tweaks](./windows/images/windhawk/taskbar-tray-system-icon-tweaks.png) | ![Windows 11 Notification Center Styler](./windows/images/windhawk/windows-11-notification-center-styler.png) |
 | ![Windows 11 Start Menu Styler](./windows/images/windhawk/windows-11-start-menu-styler.png) | ![Windows 11 Taskbar Styler](./windows/images/windhawk/windows-11-taskbar-styler.png) |
 
-### PowerToys settings
+### ⚙️ PowerToys settings
 
 Paste this command in a **CMD** session to get the path of the Windows Terminal executable to paste in the "**App**" section:
 
