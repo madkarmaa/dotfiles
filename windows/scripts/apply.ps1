@@ -15,20 +15,20 @@ function New-DestDir {
 
 function Apply-Yasb {
     Write-Host "Applying yasb configuration..."
-    Copy-Item "$PSScriptRoot\windows\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
+    Copy-Item "$PSScriptRoot\..\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
     Write-Host "✅ yasb applied" -ForegroundColor Green
 }
 
 function Apply-PowerShell {
     Write-Host "Applying PowerShell profile..."
-    Copy-Item "$PSScriptRoot\windows\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\PowerShell") -Force
-    Copy-Item "$PSScriptRoot\windows\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\WindowsPowerShell") -Force
+    Copy-Item "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\PowerShell") -Force
+    Copy-Item "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\WindowsPowerShell") -Force
     Write-Host "✅ PowerShell profile applied" -ForegroundColor Green
 }
 
 function Apply-Fastfetch {
     Write-Host "Applying fastfetch configuration..."
-    Copy-Item "$PSScriptRoot\windows\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
+    Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
     Write-Host "✅ fastfetch applied" -ForegroundColor Green
 }
 
