@@ -64,7 +64,7 @@ Run this command in an **admin** PowerShell session to automatically apply the c
 ```
 git clone https://github.com/madkarmaa/dotfiles
 cd .\dotfiles\windows\scripts
-.\apply.ps1 # yasb, powershell, fastfetch, all (defaults to all)
+powershell.exe -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # yasb, powershell, fastfetch, all (defaults to all)
 ```
 
 <small><i>First time ricing, I hope you like it :P</i></small>
