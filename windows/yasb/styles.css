@@ -83,6 +83,10 @@
 	margin: 1px 2px 0 0;
 }
 
+.audio-menu {
+	background-color: rgba(30, 30, 46, 0.25);
+}
+
 /* MEDIA WIDGET */
 .media-widget {
 	padding: 0;
@@ -140,6 +144,15 @@
 }
 
 .brightness-widget .icon {
+	color: #a8a4a9;
+	margin: 1px 2px 0 0;
+}
+
+.brightness-menu {
+	background-color: rgba(30, 30, 46, 0.25);
+}
+
+.wifi-widget .icon {
 	color: #a8a4a9;
 	margin: 1px 2px 0 0;
 }
