@@ -13,7 +13,7 @@ Copy-Item "$env:USERPROFILE\.config\fastfetch\*" -Destination (New-Subdir "fastf
 
 $latestPowerToysBackup = Get-ChildItem -Path "$env:USERPROFILE\Documents\PowerToys\Backup" -Filter "*.ptb" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if ($latestPowerToysBackup) {
-    Copy-Item $latestPowerToysBackup.FullName -Destination (New-Subdir "powertoys") -Force
+    Copy-Item $latestPowerToysBackup.FullName -Destination (Join-Path (New-Subdir "powertoys") "backup.ptb") -Force
 } else {
     Write-Host "No PowerToys backup file found." -ForegroundColor Yellow
 }
