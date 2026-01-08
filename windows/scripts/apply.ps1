@@ -78,7 +78,7 @@ function ApplyYasb {
     Copy-Item "$PSScriptRoot\..\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
     TaskbarAutoHide -Enable $true
 
-    # reload yasb or else the windows top bar will be shown under it
+    # reload yasb or else the windows' top bar will be shown under it
     Get-Process -Name yasb -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Process yasb
 
