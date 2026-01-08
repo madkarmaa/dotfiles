@@ -46,6 +46,12 @@ schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /
 
 ### PowerToys settings
 
+Paste this command in a **CMD** session to get the path of the Windows Terminal executable to then paste in the "**App**" section.
+
+```
+where wt.exe
+```
+
 ![PowerToys settings](./windows/images/powertoys.png)
 
 ### 🚀 Apply configurations
