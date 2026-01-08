@@ -4,6 +4,37 @@ param (
     [string]$Feature = "all"
 )
 
+$TASK_TEMPLATE = @"
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.3" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+    <Triggers>
+        <LogonTrigger>
+            <UserId>{{user}}</UserId>
+        </LogonTrigger>
+    </Triggers>
+    <Principals>
+        <Principal>
+            <UserId>{{user}}</UserId>
+            <RunLevel>HighestAvailable</RunLevel>
+        </Principal>
+    </Principals>
+    <Settings>
+        <AllowStartOnDemand>true</AllowStartOnDemand>
+        <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+        <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+        <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+        <Enabled>true</Enabled>
+        <Hidden>false</Hidden>
+    </Settings>
+    <Actions>
+        <Exec>
+            <Command>cmd.exe</Command>
+            <Arguments>/c start "" /high "C:\Program Files\YASB\yasb.exe"</Arguments>
+        </Exec>
+    </Actions>
+</Task>
+"@
+
 function New-DestDir {
     param (
         [Parameter(Mandatory = $true)]
@@ -35,7 +66,15 @@ function TaskbarAutoHide {
 function ApplyYasb {
     Write-Host "Applying yasb configuration..."
 
-    schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start \"\" /high \"C:\Program Files\YASB\yasb.exe\"'
+    $user = "$env:USERDOMAIN\$env:USERNAME";
+
+    $xmlContent = $TASK_TEMPLATE -replace "{{user}}", $user
+    $xmlPath = "$env:TEMP\yasb_task.xml"
+    $xmlContent | Out-File -FilePath $xmlPath -Encoding Unicode
+
+    schtasks /create /f /tn "YASB" /xml "$xmlPath"
+
+    Remove-Item -Path $xmlPath -Force
 
     Copy-Item "$PSScriptRoot\..\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
     TaskbarAutoHide -Enable $true

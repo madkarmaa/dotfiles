@@ -27,17 +27,6 @@ My desktop setup configuration files for both **Windows** and ~~**Linux** (soon)
 
 Learn how to install the color scheme **[here](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/color-schemes)**.
 
-### ⚙️ YASB auto-start
-
-Paste this command in an **admin** PowerShell session to auto-start YASB at user logon with high priority:
-
-```
-schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start \"\" /high \"C:\Program Files\YASB\yasb.exe\"'
-```
-
-> [!TIP]
-> This command is automatically run in the [apply configurations script](#-apply-configurations).
-
 ### 🎨 Windhawk mods
 
 | | |
