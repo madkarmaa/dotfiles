@@ -186,7 +186,8 @@ function ApplyCava {
 
         $outputPath = "$env:TEMP\cava_win_x64_install.exe"
         Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $outputPath
-        Start-Process -FilePath $outputPath -Wait
+        Start-Process -FilePath $outputPath -ArgumentList @("/VERYSILENT", "/NOICONS") -Wait
+        Remove-Item -Path $outputPath -Force
     } else {
         Info "Cava is already installed"
     }
