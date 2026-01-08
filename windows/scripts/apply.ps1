@@ -90,6 +90,9 @@ function ApplyYasb {
     # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
     winget install --id AmN.yasb
 
+    Info "Installing Windhawk..."
+    winget install -e --id RamenSoftware.Windhawk
+
     Info "Applying yasb configuration..."
     $user = "$env:USERDOMAIN\$env:USERNAME";
 
