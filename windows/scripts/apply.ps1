@@ -68,7 +68,7 @@ function ApplyYasb {
 
     $user = "$env:USERDOMAIN\$env:USERNAME";
 
-    $xmlContent = $TASK_TEMPLATE -replace "{{user}}", $user
+    $xmlContent = $TASK_TEMPLATE.Trim() -replace "{{user}}", $user
     $xmlPath = "$env:TEMP\yasb_task.xml"
     $xmlContent | Out-File -FilePath $xmlPath -Encoding Unicode
 
