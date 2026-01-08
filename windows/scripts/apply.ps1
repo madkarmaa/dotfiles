@@ -14,33 +14,62 @@ function New-DestDir {
     return $dir.FullName
 }
 
-function Apply-Yasb {
+function TaskbarAutoHide {
+    param (
+        [Parameter(Mandatory)]
+        [bool]$Enable
+    )
+
+    $path = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3'
+    $data = (Get-ItemProperty -Path $path -Name Settings).Settings
+
+    # byte 8: 0x03 = enabled, 0x02 = disabled
+    $data[8] = if ($Enable) { 0x03 } else { 0x02 }
+
+    Set-ItemProperty -Path $path -Name Settings -Value $data
+
+    # restart explorer to apply the registry changes
+    Get-Process -Name explorer -ErrorAction SilentlyContinue | Stop-Process -Force
+}
+
+function ApplyYasb {
     Write-Host "Applying yasb configuration..."
+
     Copy-Item "$PSScriptRoot\..\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
+    TaskbarAutoHide -Enable $true
+
+    # reload yasb or else the windows top bar will be shown under it
+    Get-Process -Name yasb -ErrorAction SilentlyContinue | Stop-Process -Force
+    Start-Process yasb
+
     Write-Host "✅ yasb applied" -ForegroundColor Green
 }
 
-function Apply-PowerShell {
+function ApplyPowerShell {
     Write-Host "Applying PowerShell profile..."
+
     Copy-Item "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\PowerShell") -Force
     Copy-Item "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\WindowsPowerShell") -Force
+
     Write-Host "✅ PowerShell profile applied" -ForegroundColor Green
 }
 
-function Apply-Fastfetch {
+function ApplyFastfetch {
     Write-Host "Applying fastfetch configuration..."
+
     Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
+
     Write-Host "✅ fastfetch applied" -ForegroundColor Green
 }
 
 switch ($Feature) {
-    "yasb" { Apply-Yasb }
-    "powershell" { Apply-PowerShell }
-    "fastfetch" { Apply-Fastfetch }
+    "yasb" { ApplyYasb }
+    "powershell" { ApplyPowerShell }
+    "fastfetch" { ApplyFastfetch }
     "all" {
-        Apply-Yasb
-        Apply-PowerShell
-        Apply-Fastfetch
+        ApplyYasb
+        ApplyPowerShell
+        ApplyFastfetch
         Write-Host "`nAll configurations applied successfully!" -ForegroundColor Green
     }
 }
