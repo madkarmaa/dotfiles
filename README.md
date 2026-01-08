@@ -15,6 +15,7 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 - **[Windhawk](https://windhawk.net)**
 - **[YASB](https://github.com/amnweb/yasb?tab=readme-ov-file#installation)**
 - **[Fastfetch](https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows)**
+- **[PowerToys](https://learn.microsoft.com/en-us/windows/powertoys/install)**
 
 ### 🖼️ Wallpaper
 - **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=1382838434)**
@@ -26,7 +27,7 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 
 Learn how to install the color scheme **[here](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/color-schemes)**.
 
-## ⚙️ YASB auto-start
+### ⚙️ YASB auto-start
 
 Paste this command in an admin PowerShell session to auto-start YASB at user logon with high priority.
 
@@ -42,6 +43,10 @@ schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /
 | ![Taskbar Button Click](./windows/images/windhawk/taskbar-button-click.png) | ![Taskbar On Top](./windows/images/windhawk/taskbar-on-top.png) |
 | ![Taskbar Tray System Icon Tweaks](./windows/images/windhawk/taskbar-tray-system-icon-tweaks.png) | ![Windows 11 Notification Center Styler](./windows/images/windhawk/windows-11-notification-center-styler.png) |
 | ![Windows 11 Start Menu Styler](./windows/images/windhawk/windows-11-start-menu-styler.png) | ![Windows 11 Taskbar Styler](./windows/images/windhawk/windows-11-taskbar-styler.png) |
+
+### PowerToys settings
+
+![PowerToys settings](./windows/images/powertoys.png)
 
 ### 🚀 Apply configurations
 
