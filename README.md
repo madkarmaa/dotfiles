@@ -1,4 +1,4 @@
-My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
+My desktop setup configuration files for both **Windows** and ~~**Linux** (soon)~~
 
 ## 🔤 Fonts
 
@@ -29,11 +29,14 @@ Learn how to install the color scheme **[here](https://learn.microsoft.com/en-us
 
 ### ⚙️ YASB auto-start
 
-Paste this command in an **admin** PowerShell session to auto-start YASB at user logon with high priority.
+Paste this command in an **admin** PowerShell session to auto-start YASB at user logon with high priority:
 
 ```
 schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start \"\" /high \"C:\Program Files\YASB\yasb.exe\"'
 ```
+
+> [!TIP]
+> This command is automatically run in the [apply configurations script](#-apply-configurations).
 
 ### 🎨 Windhawk mods
 
@@ -46,7 +49,7 @@ schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /
 
 ### PowerToys settings
 
-Paste this command in a **CMD** session to get the path of the Windows Terminal executable to then paste in the "**App**" section.
+Paste this command in a **CMD** session to get the path of the Windows Terminal executable to paste in the "**App**" section:
 
 ```
 where wt.exe
