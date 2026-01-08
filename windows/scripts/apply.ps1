@@ -88,7 +88,7 @@ function TaskbarAutoHide {
 function ApplyYasb {
     Info "Installing YASB..."
     # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
-    winget install --id AmN.yasb
+    winget install -e --id AmN.yasb
 
     Info "Installing Windhawk..."
     winget install -e --id RamenSoftware.Windhawk
@@ -125,7 +125,7 @@ function ApplyPowerShell {
 function ApplyFastfetch {
     Info "Installing Fastfetch..."
     # https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows
-    winget install fastfetch
+    winget install -e --id Fastfetch-cli.Fastfetch
 
     Info "Applying fastfetch configuration..."
     Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
@@ -136,7 +136,7 @@ function ApplyFastfetch {
 function ApplyPowerToys {
     Info "Installing PowerToys..."
     # https://learn.microsoft.com/en-us/windows/powertoys/install#install-with-windows-package-manager
-    winget install --id Microsoft.PowerToys --source winget
+    winget install -e --id Microsoft.PowerToys --source winget
 
     Info "Applying PowerToys configuration..."
 
