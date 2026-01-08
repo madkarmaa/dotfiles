@@ -1,6 +1,6 @@
 param (
     [Parameter(Position = 0)]
-    [ValidateSet("yasb", "powershell", "fastfetch", "all")]
+    [ValidateSet("yasb", "powershell", "fastfetch", "powertoys", "all")]
     [string]$Feature = "all"
 )
 
@@ -78,6 +78,11 @@ function ApplyFastfetch {
     Write-Host "✅ fastfetch applied" -ForegroundColor Green
 }
 
+function ApplyPowerToys {
+    Write-Host "Installing PowerToys..."
+    winget install --id Microsoft.PowerToys --source winget
+}
+
 function IsAdmin {
     return ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
@@ -114,13 +119,15 @@ switch ($Feature) {
     "yasb" { ApplyYasb }
     "powershell" { ApplyPowerShell }
     "fastfetch" { ApplyFastfetch }
+    "powertoys" { ApplyPowerToys }
     "all" {
         ApplyYasb
         ApplyPowerShell
         ApplyFastfetch
-        Write-Host "`nAll configurations applied successfully!" -ForegroundColor Green
+        ApplyPowerToys
+        Write-Host "All configurations applied successfully!" -ForegroundColor Green
     }
 }
 
-Write-Host "Press any key to exit..."
+Write-Host "`nPress any key to exit..."
 [void][System.Console]::ReadKey($true)
