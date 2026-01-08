@@ -16,7 +16,7 @@ Run this command in an **admin** PowerShell session to automatically install the
 ```
 git clone https://github.com/madkarmaa/dotfiles --depth 1
 cd .\dotfiles\windows\scripts
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # yasb, powershell, fastfetch, all (defaults to all)
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # yasb, powershell, fastfetch, powertoys, all (defaults to all)
 ```
 
 ### 💻 Software
