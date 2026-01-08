@@ -4,6 +4,33 @@ param (
     [string]$Feature = "all"
 )
 
+function Info {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Message
+    )
+
+    Write-Host "[i] $Message"
+}
+
+function Success {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Message
+    )
+
+    Write-Host "[+] $Message" -ForegroundColor Green
+}
+
+function Warning {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Message
+    )
+
+    Write-Host "[!] $Message" -ForegroundColor Black -BackgroundColor Yellow
+}
+
 function New-DestDir {
     param (
         [Parameter(Mandatory = $true)]
@@ -33,12 +60,11 @@ function TaskbarAutoHide {
 }
 
 function ApplyYasb {
-    Write-Host "Installing YASB..."
+    Info "Installing YASB..."
     # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
     winget install --id AmN.yasb
 
-    Write-Host "Applying yasb configuration..."
-
+    Info "Applying yasb configuration..."
     $user = "$env:USERDOMAIN\$env:USERNAME";
 
     $xmlContent = (Get-Content "$PSScriptRoot\YASB.xml").Trim().Replace("{{user}}", $user)
@@ -56,36 +82,35 @@ function ApplyYasb {
     Get-Process -Name yasb -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Process yasb
 
-    Write-Host "✅ YASB applied" -ForegroundColor Green
+    Success "YASB applied"
 }
 
 function ApplyPowerShell {
-    Write-Host "Applying PowerShell profile..."
+    Info "Applying PowerShell profile..."
 
     Copy-Item "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\PowerShell") -Force
     Copy-Item "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\WindowsPowerShell") -Force
 
-    Write-Host "✅ PowerShell profile applied" -ForegroundColor Green
+    Success "PowerShell profile applied"
 }
 
 function ApplyFastfetch {
-    Write-Host "Installing fastfetch..."
+    Info "Installing fastfetch..."
     # https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows
     winget install fastfetch
 
-    Write-Host "Applying fastfetch configuration..."
-
+    Info "Applying fastfetch configuration..."
     Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
 
-    Write-Host "✅ Fastfetch applied" -ForegroundColor Green
+    Success "Fastfetch applied"
 }
 
 function ApplyPowerToys {
-    Write-Host "Installing PowerToys..."
+    Info "Installing PowerToys..."
     # https://learn.microsoft.com/en-us/windows/powertoys/install#install-with-windows-package-manager
     winget install --id Microsoft.PowerToys --source winget
 
-    Write-Host "Applying PowerToys configuration..."
+    Info "Applying PowerToys configuration..."
 
     $nowDt = [DateTime]::UtcNow
     $nowFt = $nowDt.ToFileTimeUtc()
@@ -104,8 +129,8 @@ function ApplyPowerToys {
     # so we open the settings via explorer.exe and try to intercept the process instead
     Start-Process explorer.exe -ArgumentList "C:\Program Files\PowerToys\WinUI3Apps\PowerToys.Settings.exe"
 
-    Write-Host "Please restore the settings from the PowerToys Settings window that just opened, under General > Backup & Restore" -ForegroundColor Black -BackgroundColor Yellow
-    Write-Host "After restoring, close the PowerToys Settings window to continue..." -ForegroundColor Black -BackgroundColor Yellow
+    Warning "Please restore the settings from the PowerToys Settings window that just opened, under General > Backup & Restore"
+    Warning "After restoring, close the PowerToys Settings window to continue..."
 
     $RETRIES = 15
     for ($i = 0; $i -lt $RETRIES; $i++) {
@@ -117,7 +142,7 @@ function ApplyPowerToys {
         Start-Sleep -Seconds 1
     }
 
-    Write-Host "✅ PowerToys applied" -ForegroundColor Green
+    Success "PowerToys applied"
 }
 
 function IsAdmin {
@@ -162,7 +187,7 @@ switch ($Feature) {
         ApplyPowerShell
         ApplyFastfetch
         ApplyPowerToys
-        Write-Host "All configurations applied successfully!" -ForegroundColor Green
+        Success "All configurations applied successfully!"
     }
 }
 
