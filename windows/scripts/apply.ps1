@@ -179,6 +179,7 @@ function ApplyCava {
     if (-not $isCavaInstalled) {
         Info "Installing Cava..."
 
+        # Cava has a winget package but it's outdated, so we download the latest release from GitHub
         $release = Invoke-RestMethod -Uri "https://api.github.com/repos/karlstav/cava/releases/latest"
         $asset = $release.assets | Where-Object { $_.name -eq "cava_win_x64_install.exe" }
 
