@@ -32,7 +32,7 @@ Learn how to install the color scheme **[here](https://learn.microsoft.com/en-us
 Paste this command in an admin PowerShell session to auto-start YASB at user logon with high priority.
 
 ```
-schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start "" /high "C:\Program Files\YASB\yasb.exe"'
+schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start \"\" /high \"C:\Program Files\YASB\yasb.exe\"'
 ```
 
 ### 🎨 Windhawk mods

@@ -35,6 +35,8 @@ function TaskbarAutoHide {
 function ApplyYasb {
     Write-Host "Applying yasb configuration..."
 
+    schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start \"\" /high \"C:\Program Files\YASB\yasb.exe\"'
+
     Copy-Item "$PSScriptRoot\..\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
     TaskbarAutoHide -Enable $true
 
@@ -60,6 +62,38 @@ function ApplyFastfetch {
     Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
 
     Write-Host "✅ fastfetch applied" -ForegroundColor Green
+}
+
+function IsAdmin {
+    return ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+function RelaunchScript {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$ScriptPath,
+
+        [Parameter(Mandatory = $true)]
+        [hashtable]$BoundParameters,
+
+        [Parameter(Mandatory = $false)]
+        [object[]]$UnboundArguments = @()
+    )
+
+    $argList = @()
+    foreach ($param in $BoundParameters.GetEnumerator()) {
+        $argList += "-$($param.Key)"
+        $argList += "`"$($param.Value)`""
+    }
+
+    $argList += $UnboundArguments
+
+    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`" $argList" -Verb RunAs
+    exit
+}
+
+if (-not (IsAdmin)) {
+    RelaunchScript -ScriptPath $MyInvocation.MyCommand.Path -BoundParameters $MyInvocation.BoundParameters -UnboundArguments $args
 }
 
 switch ($Feature) {
