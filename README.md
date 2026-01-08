@@ -62,9 +62,9 @@ where wt.exe
 Run this command in an **admin** PowerShell session to automatically apply the configurations:
 
 ```
-git clone https://github.com/madkarmaa/dotfiles
+git clone https://github.com/madkarmaa/dotfiles --depth 1
 cd .\dotfiles\windows\scripts
-powershell.exe -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # yasb, powershell, fastfetch, all (defaults to all)
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # yasb, powershell, fastfetch, all (defaults to all)
 ```
 
 <small><i>First time ricing, I hope you like it :P</i></small>
