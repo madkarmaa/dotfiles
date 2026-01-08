@@ -95,7 +95,7 @@ function ApplyPowerShell {
 }
 
 function ApplyFastfetch {
-    Info "Installing fastfetch..."
+    Info "Installing Fastfetch..."
     # https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows
     winget install fastfetch
 
