@@ -29,7 +29,7 @@ Learn how to install the color scheme **[here](https://learn.microsoft.com/en-us
 
 ### ⚙️ YASB auto-start
 
-Paste this command in an admin PowerShell session to auto-start YASB at user logon with high priority.
+Paste this command in an **admin** PowerShell session to auto-start YASB at user logon with high priority.
 
 ```
 schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start \"\" /high \"C:\Program Files\YASB\yasb.exe\"'
@@ -56,7 +56,7 @@ where wt.exe
 
 ### 🚀 Apply configurations
 
-Run this command to automatically apply the configurations:
+Run this command in an **admin** PowerShell session to automatically apply the configurations:
 
 ```
 git clone https://github.com/madkarmaa/dotfiles
