@@ -9,18 +9,12 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 
 ![Windows desktop](./windows/images/desktop.png)
 
-- **[Wallpaper Engine](https://store.steampowered.com/app/431960)**
+### 💻 Software
+
+- **[Wallpaper Engine](https://store.steampowered.com/app/431960)** (Steam)
 - **[Windhawk](https://windhawk.net)**
 - **[YASB](https://github.com/amnweb/yasb?tab=readme-ov-file#installation)**
 - **[Fastfetch](https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows)**
-
-## ⚙️ YASB auto-start
-
-Paste this command in an admin PowerShell session to auto-start YASB at user logon with high priority.
-
-```
-schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start "" /high "C:\Program Files\YASB\yasb.exe"'
-```
 
 ### 🖼️ Wallpaper
 - **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=1382838434)**
@@ -30,7 +24,15 @@ schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /
 
 **Get it [here](https://windowsterminalthemes.dev/?theme=OneDark)**.
 
-Learn how to install the color scheme [here](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/color-schemes).
+Learn how to install the color scheme **[here](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/color-schemes)**.
+
+## ⚙️ YASB auto-start
+
+Paste this command in an admin PowerShell session to auto-start YASB at user logon with high priority.
+
+```
+schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /it /tn "YASB" /tr 'cmd.exe /c start "" /high "C:\Program Files\YASB\yasb.exe"'
+```
 
 ### 🎨 Windhawk mods
 
@@ -48,7 +50,7 @@ Run this command to automatically apply the configurations:
 ```
 git clone https://github.com/madkarmaa/dotfiles
 cd .\dotfiles\windows\scripts
-.\apply.ps1 # yasb, powershell, fastfetch, all
+.\apply.ps1 # yasb, powershell, fastfetch, all (defaults to all)
 ```
 
 <small><i>First time ricing, I hope you like it :P</i></small>
