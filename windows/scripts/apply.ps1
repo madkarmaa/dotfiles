@@ -10,7 +10,8 @@ function New-DestDir {
         [string]$Path
     )
 
-    New-Item -Force -Type Directory -Path $Path | Out-Null
+    $dir = New-Item -Force -Type Directory -Path $Path
+    return $dir.FullName
 }
 
 function Apply-Yasb {

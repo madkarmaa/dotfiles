@@ -4,7 +4,7 @@ function New-Subdir {
         [string]$Subpath
     )
 
-    New-Item -Force -Type Directory -Path (Join-Path "$PSScriptRoot\windows" $Subpath)
+    New-Item -Force -Type Directory -Path (Join-Path "$PSScriptRoot\..\" $Subpath)
 }
 
 Copy-Item "$env:USERPROFILE\.config\yasb\*" -Destination (New-Subdir "yasb") -Recurse -Force -Exclude "yasb.log"
