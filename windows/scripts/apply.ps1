@@ -33,6 +33,9 @@ function TaskbarAutoHide {
 }
 
 function ApplyYasb {
+    Write-Host "Installing YASB..."
+    winget install --id AmN.yasb # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
+
     Write-Host "Applying yasb configuration..."
 
     $user = "$env:USERDOMAIN\$env:USERNAME";
@@ -65,6 +68,9 @@ function ApplyPowerShell {
 }
 
 function ApplyFastfetch {
+    Write-Host "Installing fastfetch..."
+    winget install fastfetch # https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows
+
     Write-Host "Applying fastfetch configuration..."
 
     Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
@@ -115,3 +121,6 @@ switch ($Feature) {
         Write-Host "`nAll configurations applied successfully!" -ForegroundColor Green
     }
 }
+
+Write-Host "Press any key to exit..."
+[void][System.Console]::ReadKey($true)
