@@ -9,12 +9,22 @@ My desktop setup configuration files for both **Windows** and ~~**Linux** (soon)
 
 ![Windows desktop](./windows/images/desktop.png)
 
+### 🚀 Apply configurations
+
+Run this command in an **admin** PowerShell session to automatically install the required software and apply the configurations:
+
+```
+git clone https://github.com/madkarmaa/dotfiles --depth 1
+cd .\dotfiles\windows\scripts
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # yasb, powershell, fastfetch, all (defaults to all)
+```
+
 ### 💻 Software
 
 - **[Wallpaper Engine](https://store.steampowered.com/app/431960)** (Steam)
 - **[Windhawk](https://windhawk.net)**
-- **[YASB](https://github.com/amnweb/yasb?tab=readme-ov-file#installation)**
-- **[Fastfetch](https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows)**
+- **[YASB](https://github.com/amnweb/yasb?tab=readme-ov-file#winget)**
+- **[Fastfetch](https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#:~:text=winget%3A%20winget%20install%20fastfetch)**
 - **[PowerToys](https://learn.microsoft.com/en-us/windows/powertoys/install)**
 
 ### 🖼️ Wallpaper
@@ -45,15 +55,5 @@ where wt.exe
 ```
 
 ![PowerToys settings](./windows/images/powertoys.png)
-
-### 🚀 Apply configurations
-
-Run this command in an **admin** PowerShell session to automatically apply the configurations:
-
-```
-git clone https://github.com/madkarmaa/dotfiles --depth 1
-cd .\dotfiles\windows\scripts
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all" # yasb, powershell, fastfetch, all (defaults to all)
-```
 
 <small><i>First time ricing, I hope you like it :P</i></small>
