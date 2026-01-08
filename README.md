@@ -19,7 +19,7 @@ My desktop setup config files, for both **Windows** and ~~**Linux** (soon)~~
 Paste this command in an admin PowerShell session to auto-start YASB at user logon.
 
 ```pwsh
-schtasks /create /f /rl highest /sc onlogon /tn "YASB" /tr 'cmd.exe /c start "" /high "C:\Program Files\YASB\yasb.exe"'
+schtasks /create /f /rl highest /sc onlogon /ru "$env:USERNAME" /tn "YASB" /tr 'cmd.exe /c start "" /high "C:\Program Files\YASB\yasb.exe"'
 ```
 
 ### Wallpaper
