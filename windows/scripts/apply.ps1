@@ -90,12 +90,15 @@ function HighPriorityTask {
         [Parameter(Mandatory = $true)]
         [string]$ProgramPath,
         [Parameter(Mandatory = $true)]
-        [string]$TaskName
+        [string]$TaskName,
+        [Parameter(Mandatory = $true)]
+        [bool]$RunAsAdmin
     )
 
     $user = "$env:USERDOMAIN\$env:USERNAME";
+    $runLevel = $RunAsAdmin ? "HighestAvailable" : "LeastPrivilege"
 
-    $xmlContent = (Get-Content "$PSScriptRoot\HighPriority.xml").Trim().Replace("{{user}}", $user).Replace("{{program}}", $ProgramPath.Trim()).Replace("{{name}}", $TaskName.Trim().Replace(" ", ""))
+    $xmlContent = (Get-Content "$PSScriptRoot\HighPriority.xml").Trim().Replace("{{user}}", $user).Replace("{{program}}", $ProgramPath.Trim()).Replace("{{name}}", $TaskName.Trim().Replace(" ", "")).Replace("{{runLevel}}", $runLevel)
     $xmlPath = "$env:TEMP\yasb_task.xml"
     $xmlContent | Out-File -FilePath $xmlPath -Encoding Unicode
 
@@ -114,7 +117,7 @@ function ApplyYasb {
 
     Info "Applying yasb configuration..."
 
-    HighPriorityTask -ProgramPath "C:\Program Files\YASB\yasb.exe" -TaskName "YASB"
+    HighPriorityTask -ProgramPath "C:\Program Files\YASB\yasb.exe" -TaskName "YASB" -RunAsAdmin $true
 
     Copy-Item "$PSScriptRoot\..\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
     TaskbarAutoHide -Enable $true
@@ -131,7 +134,7 @@ function ApplyFlowLauncher {
 
     Info "Applying Flow Launcher configuration..."
 
-    HighPriorityTask -ProgramPath "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe" -TaskName "FlowLauncher"
+    HighPriorityTask -ProgramPath "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe" -TaskName "FlowLauncher" -RunAsAdmin $false
 
     Get-Process -Name Flow.Launcher -ErrorAction SilentlyContinue | Stop-Process -Force
 
