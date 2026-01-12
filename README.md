@@ -21,8 +21,6 @@ cd .\dotfiles\windows\scripts
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all"
 ```
 
-![Apply script](./windows/images/apply-script.png)
-
 ### 💻 Software
 
 - **[Wallpaper Engine](https://store.steampowered.com/app/431960)** (Steam)
