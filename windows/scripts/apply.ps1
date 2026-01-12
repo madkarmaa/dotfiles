@@ -69,7 +69,7 @@ function AddToUserPath {
 
 function TaskbarAutoHide {
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [bool]$Enable
     )
 
@@ -85,6 +85,25 @@ function TaskbarAutoHide {
     Get-Process -Name explorer -ErrorAction SilentlyContinue | Stop-Process -Force
 }
 
+function HighPriorityTask {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$ProgramPath,
+        [Parameter(Mandatory = $true)]
+        [string]$TaskName
+    )
+
+    $user = "$env:USERDOMAIN\$env:USERNAME";
+
+    $xmlContent = (Get-Content "$PSScriptRoot\HighPriority.xml").Trim().Replace("{{user}}", $user).Replace("{{program}}", $ProgramPath.Trim()).Replace("{{name}}", $TaskName.Trim().Replace(" ", ""))
+    $xmlPath = "$env:TEMP\yasb_task.xml"
+    $xmlContent | Out-File -FilePath $xmlPath -Encoding Unicode
+
+    schtasks /create /f /tn $TaskName /xml "$xmlPath"
+
+    Remove-Item -Path $xmlPath -Force
+}
+
 function ApplyYasb {
     Info "Installing YASB..."
     # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
@@ -94,21 +113,14 @@ function ApplyYasb {
     winget install -e --id RamenSoftware.Windhawk
 
     Info "Applying yasb configuration..."
-    $user = "$env:USERDOMAIN\$env:USERNAME";
 
-    $xmlContent = (Get-Content "$PSScriptRoot\YASB.xml").Trim().Replace("{{user}}", $user)
-    $xmlPath = "$env:TEMP\yasb_task.xml"
-    $xmlContent | Out-File -FilePath $xmlPath -Encoding Unicode
-
-    schtasks /create /f /tn "YASB" /xml "$xmlPath"
-
-    Remove-Item -Path $xmlPath -Force
+    HighPriorityTask -ProgramPath "C:\Program Files\YASB\yasb.exe" -TaskName "YASB"
 
     Copy-Item "$PSScriptRoot\..\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
     TaskbarAutoHide -Enable $true
 
     # reload yasb or else the windows' top bar will be shown under it
-    yasbc.exe reload
+    yasbc.exe reload | Out-Null
 
     Success "YASB configuration applied"
 }
@@ -118,6 +130,8 @@ function ApplyFlowLauncher {
     winget install -e --id Flow-Launcher.Flow-Launcher
 
     Info "Applying Flow Launcher configuration..."
+
+    HighPriorityTask -ProgramPath "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe" -TaskName "FlowLauncher"
 
     Get-Process -Name Flow.Launcher -ErrorAction SilentlyContinue | Stop-Process -Force
 
