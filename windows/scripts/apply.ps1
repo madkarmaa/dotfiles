@@ -114,6 +114,9 @@ function ApplyYasb {
 }
 
 function ApplyFlowLauncher {
+    Info "Installing Flow Launcher..."
+    winget install -e --id Flow-Launcher.Flow-Launcher
+
     Info "Applying Flow Launcher configuration..."
 
     Get-Process -Name Flow.Launcher -ErrorAction SilentlyContinue | Stop-Process -Force
