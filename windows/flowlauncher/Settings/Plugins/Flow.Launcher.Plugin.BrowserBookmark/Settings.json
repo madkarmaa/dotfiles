@@ -1,0 +1,29 @@
+{
+  "OpenInNewBrowserWindow": true,
+  "BrowserPath": null,
+  "EnableFavicons": false,
+  "LoadChromeBookmark": true,
+  "LoadFirefoxBookmark": true,
+  "LoadEdgeBookmark": true,
+  "CustomChromiumBrowsers": [
+    {
+      "Name": "Vivaldi",
+      "DataDirectoryPath": "C:\\Users\\madkarma\\AppData\\Local\\Vivaldi\\User Data",
+      "AllBrowserTypes": [
+        {
+          "Value": 0,
+          "Display": "Chromium",
+          "LocalizationKey": null,
+          "LocalizationValue": "Chromium"
+        },
+        {
+          "Value": 1,
+          "Display": "Firefox",
+          "LocalizationKey": null,
+          "LocalizationValue": "Firefox"
+        }
+      ],
+      "BrowserType": 0
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "Shell": 3,
+  "ReplaceWinR": false,
+  "CloseShellAfterPress": false,
+  "LeaveShellOpen": false,
+  "RunAsAdministrator": false,
+  "UseWindowsTerminal": true,
+  "ShowOnlyMostUsedCMDs": false,
+  "ShowOnlyMostUsedCMDsNumber": 5,
+  "CommandHistory": {
+    "cava": 1
+  }
+}

@@ -17,7 +17,7 @@ Run this command in an **admin** PowerShell session to automatically install the
 git clone https://github.com/madkarmaa/dotfiles --depth 1
 cd .\dotfiles\windows\scripts
 
-# yasb, powershell, fastfetch, cava, powertoys, all (defaults to all)
+# yasb, flowlauncher, powershell, fastfetch, cava, powertoys, all (defaults to all)
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all"
 ```
 
@@ -38,6 +38,12 @@ winget install -e --id RamenSoftware.Windhawk
 
 ```
 winget install -e --id AmN.yasb
+```
+
+- **[Flow Launcher](https://github.com/Flow-Launcher/Flow.Launcher)**
+
+```
+winget install -e --id Flow-Launcher.Flow-Launcher
 ```
 
 - **[Fastfetch](https://github.com/fastfetch-cli/fastfetch)**

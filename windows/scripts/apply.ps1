@@ -1,6 +1,6 @@
 param (
     [Parameter(Position = 0)]
-    [ValidateSet("yasb", "powershell", "fastfetch", "cava", "powertoys", "all")]
+    [ValidateSet("yasb", "flowlauncher", "powershell", "fastfetch", "cava", "powertoys", "all")]
     [string]$Feature = "all"
 )
 
@@ -111,6 +111,45 @@ function ApplyYasb {
     yasbc.exe reload
 
     Success "YASB configuration applied"
+}
+
+function ApplyFlowLauncher {
+    Info "Applying Flow Launcher configuration..."
+
+    Get-Process -Name Flow.Launcher -ErrorAction SilentlyContinue | Stop-Process -Force
+
+    Copy-Item "$PSScriptRoot\..\flowlauncher\*" -Destination (New-DestDir "$env:APPDATA\FlowLauncher") -Recurse -Force
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/R0gue301/MinFlow/refs/heads/main/MinFlow.xaml" -OutFile (Join-Path (New-DestDir "$env:APPDATA\FlowLauncher\Themes") "MinFlow.xaml")
+
+    $ONLINE_PLUGINS = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/Flow-Launcher/Flow.Launcher.PluginsManifest/main/plugins.json"
+    $CUSTOM_PLUGINS = Get-Content "$PSScriptRoot\..\flowlauncher\custom_plugins.json" -Raw | ConvertFrom-Json
+
+    foreach ($ID in $CUSTOM_PLUGINS) {
+        $PluginData = $ONLINE_PLUGINS | Where-Object { $_.ID -eq $ID }
+
+        $Name    = $PluginData.Name
+        $Version = $PluginData.Version
+        $Url     = $PluginData.UrlDownload
+
+        $FolderName = "$Name-$Version"
+        $TargetDir  = "$env:APPDATA\FlowLauncher\Plugins\$FolderName"
+        $ZipPath    = "$env:TEMP\$ID.zip"
+
+        if (Test-Path $TargetDir) {
+            Info "Skipping '$FolderName' (already exists)"
+            continue
+        }
+
+        Info "Installing '$FolderName' plugin..."
+
+        Invoke-WebRequest -Uri $Url -OutFile $ZipPath
+        Expand-Archive -Path $ZipPath -DestinationPath $TargetDir -Force
+        Remove-Item $ZipPath -Force
+    }
+
+    Start-Process "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe"
+
+    Success "Flow Launcher configuration applied"
 }
 
 function ApplyPowerShell {
@@ -244,12 +283,14 @@ $ProgressPreference = "SilentlyContinue"
 
 switch ($Feature) {
     "yasb" { ApplyYasb }
+    "flowlauncher" { ApplyFlowLauncher }
     "powershell" { ApplyPowerShell }
     "fastfetch" { ApplyFastfetch }
     "cava" { ApplyCava }
     "powertoys" { ApplyPowerToys }
     "all" {
         ApplyYasb
+        ApplyFlowLauncher
         ApplyPowerShell
         ApplyFastfetch
         ApplyCava
