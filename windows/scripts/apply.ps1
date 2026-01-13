@@ -96,7 +96,12 @@ function HighPriorityTask {
     )
 
     $user = "$env:USERDOMAIN\$env:USERNAME";
-    $runLevel = $RunAsAdmin ? "HighestAvailable" : "LeastPrivilege"
+
+    if ($RunAsAdmin) {
+        $runLevel = "HighestAvailable"
+    } else {
+        $runLevel = "LeastPrivilege"
+    }
 
     $xmlContent = (Get-Content "$PSScriptRoot\HighPriority.xml").Trim().Replace("{{user}}", $user).Replace("{{program}}", $ProgramPath.Trim()).Replace("{{name}}", $TaskName.Trim().Replace(" ", "")).Replace("{{runLevel}}", $runLevel)
     $xmlPath = "$env:TEMP\yasb_task.xml"
