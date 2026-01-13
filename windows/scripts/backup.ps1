@@ -25,7 +25,6 @@ foreach ($mod in $mods) {
         Remove-Item $tempFile
     }
 
-    # Export Disabled value if it exists
     $modPath = "HKLM:\SOFTWARE\Windhawk\Engine\Mods\$mod"
     $disabled = Get-ItemProperty -Path $modPath -Name "Disabled" -ErrorAction SilentlyContinue
 
