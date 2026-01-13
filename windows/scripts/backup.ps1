@@ -9,6 +9,34 @@ function New-Subdir {
 
 Copy-Item "$env:USERPROFILE\.config\yasb\*" -Destination (New-Subdir "yasb") -Recurse -Force -Exclude "yasb.log"
 
+$mods = Get-ChildItem "HKLM:\SOFTWARE\Windhawk\Engine\Mods" | Select-Object -ExpandProperty PSChildName
+
+$windhawkRegBackupPath = Join-Path (New-Subdir "windhawk") "settings.reg"
+"Windows Registry Editor Version 5.00`n" | Out-File -FilePath $windhawkRegBackupPath -Encoding Unicode
+
+foreach ($mod in $mods) {
+    $regPath = "HKLM\SOFTWARE\Windhawk\Engine\Mods\$mod\Settings"
+    $tempFile = "$env:TEMP\temp_$mod.reg"
+    reg export $regPath $tempFile 2>$null | Out-Null
+
+    if (Test-Path $tempFile) {
+        # skip the header line and append the rest
+        Get-Content $tempFile | Select-Object -Skip 1 | Add-Content -Path $windhawkRegBackupPath
+        Remove-Item $tempFile
+    }
+
+    # Export Disabled value if it exists
+    $modPath = "HKLM:\SOFTWARE\Windhawk\Engine\Mods\$mod"
+    $disabled = Get-ItemProperty -Path $modPath -Name "Disabled" -ErrorAction SilentlyContinue
+
+    if ($disabled) {
+        "[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\$mod]" | Add-Content -Path $windhawkRegBackupPath
+        $value = $disabled.Disabled
+        "`"Disabled`"=dword:$('{0:x8}' -f $value)" | Add-Content -Path $windhawkRegBackupPath
+        "" | Add-Content -Path $windhawkRegBackupPath
+    }
+}
+
 $FLOWLAUNCHER_SETTINGS = "$env:APPDATA\FlowLauncher\Settings\Settings.json"
 
 Copy-Item $FLOWLAUNCHER_SETTINGS -Destination (New-Subdir "flowlauncher\Settings") -Force

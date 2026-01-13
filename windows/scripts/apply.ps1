@@ -1,6 +1,6 @@
 param (
     [Parameter(Position = 0)]
-    [ValidateSet("yasb", "flowlauncher", "powershell", "fastfetch", "cava", "powertoys", "all")]
+    [ValidateSet("windhawk", "yasb", "flowlauncher", "powershell", "fastfetch", "cava", "powertoys", "all")]
     [string]$Feature = "all"
 )
 
@@ -107,13 +107,24 @@ function HighPriorityTask {
     Remove-Item -Path $xmlPath -Force
 }
 
+function ApplyWindhawk {
+    Info "Installing Windhawk..."
+    winget install -e --id RamenSoftware.Windhawk
+
+    Info "Applying Windhawk configuration..."
+
+    regedit.exe /s "$PSScriptRoot\..\windhawk\settings.reg"
+    Start-Process "C:\Program Files\Windhawk\windhawk.exe" -ArgumentList @("-restart", "-tray-only")
+
+    Success "Windhawk configuration applied"
+}
+
 function ApplyYasb {
+    ApplyWindhawk # YASB requires Windhawk to be installed for it to look correct
+
     Info "Installing YASB..."
     # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
     winget install -e --id AmN.yasb
-
-    Info "Installing Windhawk..."
-    winget install -e --id RamenSoftware.Windhawk
 
     Info "Applying yasb configuration..."
 
@@ -302,6 +313,7 @@ $OriginalProgressPreference = $ProgressPreference
 $ProgressPreference = "SilentlyContinue"
 
 switch ($Feature) {
+    "windhawk" { ApplyWindhawk }
     "yasb" { ApplyYasb }
     "flowlauncher" { ApplyFlowLauncher }
     "powershell" { ApplyPowerShell }
@@ -309,6 +321,7 @@ switch ($Feature) {
     "cava" { ApplyCava }
     "powertoys" { ApplyPowerToys }
     "all" {
+        ApplyWindhawk
         ApplyYasb
         ApplyFlowLauncher
         ApplyPowerShell
