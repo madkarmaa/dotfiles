@@ -112,6 +112,29 @@ function HighPriorityTask {
     Remove-Item -Path $xmlPath -Force
 }
 
+function FindLatestGitHubReleaseFile {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$User,
+        [Parameter(Mandatory = $true)]
+        [string]$Repo,
+        [Parameter(Mandatory = $true)]
+        [string]$FilePattern
+    )
+
+    $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/$($User.Trim())/$($Repo.Trim())/releases"
+
+    foreach ($release in $releases) {
+        foreach ($asset in $release.assets) {
+            if ($asset.name -like $FilePattern) {
+                return $asset.browser_download_url
+            }
+        }
+    }
+
+    return $null
+}
+
 function ApplyWindhawk {
     Info "Installing Windhawk..."
     winget install -e --id RamenSoftware.Windhawk
@@ -254,16 +277,16 @@ function ApplyCava {
     if (-not $isCavaInstalled) {
         Info "Installing Cava..."
 
-        # Cava has a winget package but it's outdated, so we download the latest release from GitHub
-        $release = Invoke-RestMethod -Uri "https://api.github.com/repos/karlstav/cava/releases/latest"
-        $asset = $release.assets | Where-Object { $_.name -eq "cava_win_x64_install.exe" }
+        # Cava has a winget package but it's outdated, so we download the releases from GitHub
+        $fileName = "cava_win_x64_install.exe"
+        $asset = FindLatestGitHubReleaseFile -User "karlstav" -Repo "cava" -FilePattern $fileName
 
         if (-not $asset) {
-            Failure "cava_win_x64_install.exe not found in the latest release"
+            Failure "$fileName not found in the releases"
             return
         }
 
-        $outputPath = "$env:TEMP\cava_win_x64_install.exe"
+        $outputPath = "$env:TEMP\$fileName"
         Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $outputPath
         Start-Process -FilePath $outputPath -ArgumentList @("/VERYSILENT", "/NOICONS") -Wait
         Remove-Item -Path $outputPath -Force
@@ -280,6 +303,54 @@ function ApplyCava {
     Info "Applying Cava configuration..."
     Copy-Item "$PSScriptRoot\..\cava\config" -Destination (New-DestDir "$env:USERPROFILE\.config\cava") -Force
     Success "Cava configuration applied"
+}
+
+function InstallAcrylicMenus {
+    param (
+        [Parameter(Mandatory = $true)]
+        [bool]$SystemWide
+    )
+
+    Info "Installing AcrylicMenus..."
+
+    $fileName = "AcrylicMenus.zip"
+    $asset = FindLatestGitHubReleaseFile -User "krlvm" -Repo "AcrylicMenus" -FilePattern $fileName
+
+    if (-not $asset) {
+        Failure "$fileName not found in the releases"
+        return
+    }
+
+    Stop-ScheduledTask -TaskName "AcrylicMenus" -ErrorAction SilentlyContinue
+    Get-Process -Name "AcrylicMenusLoader" -ErrorAction SilentlyContinue | Stop-Process -Force
+
+    $zipPath = "$env:TEMP\$fileName"
+    Invoke-WebRequest -Uri $asset -OutFile $zipPath
+
+    $LOCAL_INSTALLATION_PATH="$env:LOCALAPPDATA\AcrylicMenus"
+    $GLOBAL_INSTALLATION_PATH="$env:PROGRAMFILES\AcrylicMenus"
+
+    if ($SystemWide) {
+        $installationPath = $GLOBAL_INSTALLATION_PATH
+    } else {
+        $installationPath = $LOCAL_INSTALLATION_PATH
+    }
+
+    if (Test-Path $installationPath) {
+        Remove-Item -Path $installationPath -Recurse -Force
+    }
+
+    Expand-Archive -Path $zipPath -DestinationPath $installationPath -Force
+    Remove-Item -Path $zipPath -Force
+
+    HighPriorityTask -ProgramPath "$installationPath\AcrylicMenusLoader.exe" -TaskName "AcrylicMenus" -RunAsAdmin $true
+    Start-ScheduledTask -TaskName "AcrylicMenus"
+
+    if ($SystemWide) {
+        Success "AcrylicMenus installed successfully for all users"
+    } else {
+        Success "AcrylicMenus installed successfully for the current user"
+    }
 }
 
 function IsAdmin {
@@ -316,6 +387,8 @@ if (-not (IsAdmin)) {
 
 $OriginalProgressPreference = $ProgressPreference
 $ProgressPreference = "SilentlyContinue"
+
+InstallAcrylicMenus -SystemWide $true
 
 switch ($Feature) {
     "windhawk" { ApplyWindhawk }
