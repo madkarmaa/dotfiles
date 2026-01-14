@@ -25,6 +25,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all"
 
 - **[Wallpaper Engine](https://store.steampowered.com/app/431960)** (Steam)
 - **[Cava](https://github.com/karlstav/cava/releases/latest)**
+- **[AcrylicMenus](https://github.com/krlvm/AcrylicMenus/releases/latest)**
 
 - **[Windhawk](https://windhawk.net)**
 
@@ -57,8 +58,7 @@ winget install -e --id Microsoft.PowerToys --source winget
 ```
 
 ### 🖼️ Wallpaper
-- **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=1382838434)**
-- **[Static](./images/wallpaper-static.jpg)** ([original](https://www.pexels.com/photo/grayscale-photography-of-mountain-234272/))
+- **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=3141120842)**
 
 ### 🖥️ Windows Terminal color scheme
 
