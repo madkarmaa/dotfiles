@@ -32,7 +32,7 @@
   --color-red: #cb3b42;
   --color-dark-red: #5a1e22;
   --color-light-red: #e04c52;
-  --color-light-blue: rgb(112, 157, 255);
+  --color-light-blue: #8987c2;
   --radius-normal: 8px;
   --radius-xl: 20px;
   --padding-normal: 0 8px;
@@ -320,11 +320,11 @@
 }
 
 .power-menu-popup .button.cancel .icon {
-  color: var(--color-green);
+  color: var(--color-light-blue);
 }
 
 .power-menu-popup .button.cancel .label {
-  color: var(--color-green);
+  color: var(--color-light-blue);
 }
 
 .power-menu-popup .button.shutdown .icon {
