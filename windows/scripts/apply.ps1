@@ -206,7 +206,7 @@ function ApplyFlowLauncher {
         Remove-Item $ZipPath -Force
     }
 
-    Start-Process "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe"
+    Start-ScheduledTask -TaskName "FlowLauncher"
 
     Success "Flow Launcher configuration applied"
 }
