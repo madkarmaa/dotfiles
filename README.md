@@ -11,14 +11,12 @@ My desktop setup configuration files for both **Windows** and ~~**Linux** (soon)
 
 ### 🚀 Apply configurations
 
-Run this command in an **admin** PowerShell session to automatically install the required software and apply the configurations:
+Run these commands in an **admin** PowerShell session to automatically install the required software and apply the configurations:
 
 ```
 git clone https://github.com/madkarmaa/dotfiles --depth 1
-cd .\dotfiles\windows\scripts
-
 # windhawk, yasb, flowlauncher, powershell, fastfetch, cava, powertoys, all (defaults to all)
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\apply.ps1 all"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\dotfiles\windows\scripts\apply.ps1 all"
 ```
 
 ### 💻 Software
@@ -68,12 +66,9 @@ Learn how to install the color scheme **[here](https://learn.microsoft.com/en-us
 
 ### 🎨 Windhawk mods
 
-| | |
-|---|---|
-| ![Extension Change No Warning](./windows/images/windhawk/extension-change-no-warning.png) | ![Start Menu All Apps](./windows/images/windhawk/start-menu-all-apps.png) |
-| ![Taskbar Button Click](./windows/images/windhawk/taskbar-button-click.png) | ![Taskbar On Top](./windows/images/windhawk/taskbar-on-top.png) |
-| ![Taskbar Tray System Icon Tweaks](./windows/images/windhawk/taskbar-tray-system-icon-tweaks.png) | ![Windows 11 Notification Center Styler](./windows/images/windhawk/windows-11-notification-center-styler.png) |
-| ![Windows 11 Start Menu Styler](./windows/images/windhawk/windows-11-start-menu-styler.png) | ![Windows 11 Taskbar Styler](./windows/images/windhawk/windows-11-taskbar-styler.png) |
+Enable these mods (configuration will be applied automatically in the registry):
+
+![Windhawk](./windows/images/windhawk.png)
 
 ### ⚙️ PowerToys settings
 
