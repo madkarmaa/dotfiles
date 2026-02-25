@@ -56,7 +56,7 @@ winget install -e --id Microsoft.PowerToys --source winget
 ```
 
 ### 🖼️ Wallpaper
-- **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=3141120842)**
+- **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=2644495685)**
 
 ### 🖥️ Windows Terminal color scheme
 
