@@ -20,10 +20,10 @@
   "CycleHistoryDownHotkey": "Alt \u002B Down",
   "DialogJumpHotkey": "Alt \u002B G",
   "Language": "system",
-  "Theme": "MinFlow",
+  "Theme": "BlurBlack",
   "UseDropShadowEffect": true,
   "BackdropType": 1,
-  "ReleaseNotesVersion": "2.0.3",
+  "ReleaseNotesVersion": "2.1.0",
   "WindowHeightSize": 42,
   "ItemHeightSize": 58,
   "QueryBoxFontSize": 16,
@@ -58,12 +58,12 @@
   "SettingWindowTop": 249.60000000000002,
   "SettingWindowLeft": 549.6,
   "SettingWindowState": 0,
-  "ShowPlaceholder": true,
+  "ShowPlaceholder": false,
   "PlaceholderText": "",
-  "ShowHomePage": true,
+  "ShowHomePage": false,
   "ShowHistoryResultsForHomePage": false,
   "MaxHistoryResultsToShowForHomePage": 5,
-  "AutoRestartAfterChanging": false,
+  "AutoRestartAfterChanging": true,
   "ShowUnknownSourceWarning": true,
   "AutoUpdatePlugins": true,
   "CustomExplorerIndex": 0,
@@ -154,7 +154,7 @@
   "AlwaysStartEn": false,
   "QuerySearchPrecision": "Regular",
   "AutoUpdates": true,
-  "WindowLeft": 1024,
+  "WindowLeft": 734,
   "WindowTop": 336.6,
   "PreviousScreenWidth": 0,
   "PreviousScreenHeight": 0,
@@ -164,7 +164,7 @@
   "CustomWindowTop": 0,
   "KeepMaxResults": false,
   "MaxResultsToShow": 5,
-  "ActivateTimes": 477,
+  "ActivateTimes": 1795,
   "CustomPluginHotkeys": [],
   "CustomShortcuts": [],
   "DontPromptUpdateMsg": false,
@@ -175,6 +175,7 @@
   "HideNotifyIcon": false,
   "LeaveCmdOpen": false,
   "HideWhenDeactivated": true,
+  "ShowTaskbarWhenInvoked": false,
   "ShowAtTopmost": true,
   "SearchQueryResultsWithDelay": false,
   "SearchDelayTime": 150,
@@ -205,7 +206,7 @@
         ],
         "Priority": 0,
         "SearchDelayTime": null,
-        "Disabled": false,
+        "Disabled": true,
         "HomeDisabled": false
       },
       "CEA0FDFC6D3B4085823D60DC76F28855": {
@@ -217,7 +218,7 @@
         ],
         "Priority": 0,
         "SearchDelayTime": null,
-        "Disabled": true,
+        "Disabled": false,
         "HomeDisabled": false
       },
       "572be03c74c642baae319fc283e561a8": {
@@ -233,7 +234,7 @@
         ],
         "Priority": 0,
         "SearchDelayTime": null,
-        "Disabled": false,
+        "Disabled": true,
         "HomeDisabled": false
       },
       "6A122269676E40EB86EB543B945932B9": {
@@ -245,7 +246,7 @@
         ],
         "Priority": 0,
         "SearchDelayTime": null,
-        "Disabled": true,
+        "Disabled": false,
         "HomeDisabled": false
       },
       "9f8f9b14-2518-4907-b211-35ab6290dee7": {
@@ -370,18 +371,6 @@
         "Version": "1.0.3",
         "ActionKeywords": [
           "str"
-        ],
-        "Priority": 0,
-        "SearchDelayTime": null,
-        "Disabled": false,
-        "HomeDisabled": false
-      },
-      "9E4A2B3C-5F6D-4E8A-9B1C-2D3E4F5A6B7C": {
-        "ID": "9E4A2B3C-5F6D-4E8A-9B1C-2D3E4F5A6B7C",
-        "Name": "Speed Test",
-        "Version": "1.2.1",
-        "ActionKeywords": [
-          "st"
         ],
         "Priority": 0,
         "SearchDelayTime": null,

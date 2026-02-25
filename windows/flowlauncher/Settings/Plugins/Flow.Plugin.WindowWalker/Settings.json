@@ -7,6 +7,6 @@
     "Win": false,
     "Key": 68
   },
-  "SearchWindowsAcrossAllVDesktop": false,
+  "SearchWindowsAcrossAllVDesktop": true,
   "SearchCloakedWindows": false
 }
