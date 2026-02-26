@@ -7,7 +7,7 @@ function New-Subdir {
     New-Item -Force -Type Directory -Path (Join-Path "$PSScriptRoot\..\" $Subpath)
 }
 
-Copy-Item "$env:USERPROFILE\.config\yasb\*" -Destination (New-Subdir "yasb") -Recurse -Force -Exclude "yasb.log"
+Copy-Item "$env:USERPROFILE\.config\yasb\*" -Destination (New-Subdir "yasb") -Recurse -Force -Exclude "*.log*"
 
 $mods = Get-ChildItem "HKLM:\SOFTWARE\Windhawk\Engine\Mods" | Select-Object -ExpandProperty PSChildName
 

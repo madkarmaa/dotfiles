@@ -155,7 +155,7 @@
   "QuerySearchPrecision": "Regular",
   "AutoUpdates": true,
   "WindowLeft": 734,
-  "WindowTop": 336.6,
+  "WindowTop": 336.8,
   "PreviousScreenWidth": 0,
   "PreviousScreenHeight": 0,
   "PreviousDpiX": 0,
@@ -164,7 +164,7 @@
   "CustomWindowTop": 0,
   "KeepMaxResults": false,
   "MaxResultsToShow": 5,
-  "ActivateTimes": 1795,
+  "ActivateTimes": 1887,
   "CustomPluginHotkeys": [],
   "CustomShortcuts": [],
   "DontPromptUpdateMsg": false,
@@ -194,7 +194,7 @@
   "AnimationSpeed": "Medium",
   "CustomAnimationLength": 360,
   "PluginSettings": {
-    "PythonExecutablePath": "",
+    "PythonExecutablePath": "C:\\Users\\madkarma\\AppData\\Roaming\\uv\\python\\cpython-3.14.2-windows-x86_64-none\\pythonw.exe",
     "NodeExecutablePath": "",
     "Plugins": {
       "0ECADE17459B49F587BF81DC3A125110": {
