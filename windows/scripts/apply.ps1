@@ -27,7 +27,7 @@ function New-Symlink {
 
     if (-not (Test-Path $Source)) {
         Failure "Source path does not exist: $Source"
-        return $false
+        return
     }
 
     $resolvedSource = (Resolve-Path $Source).Path
@@ -50,7 +50,6 @@ function New-Symlink {
     }
 
     New-Item -ItemType SymbolicLink -Path $Destination -Target $resolvedSource -Force | Out-Null
-    return $true
 }
 
 function AddToUserPath {
