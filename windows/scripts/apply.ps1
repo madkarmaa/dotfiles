@@ -7,6 +7,16 @@ function RefreshEnv {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "User") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "Machine")
 }
 
+function WingetInstall {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Id
+    )
+
+    winget install -e --id $Id.Trim() --source winget --accept-source-agreements --accept-package-agreements
+    RefreshEnv
+}
+
 function New-DestDir {
     param (
         [Parameter(Mandatory = $true)]
@@ -140,9 +150,7 @@ function FindLatestGitHubReleaseFile {
 
 function ApplyWindhawk {
     Info "Installing Windhawk..."
-
-    winget install -e --id RamenSoftware.Windhawk
-    RefreshEnv
+    WingetInstall -Id "RamenSoftware.Windhawk"
 
     Info "Applying Windhawk configuration..."
 
@@ -154,9 +162,7 @@ function ApplyWindhawk {
 
 function ApplyYasb {
     Info "Installing YASB..."
-
-    winget install -e --id AmN.yasb
-    RefreshEnv
+    WingetInstall -Id "AmN.yasb"
 
     Info "Applying yasb configuration..."
 
@@ -173,9 +179,7 @@ function ApplyYasb {
 
 function ApplyFlowLauncher {
     Info "Installing Flow Launcher..."
-
-    winget install -e --id Flow-Launcher.Flow-Launcher
-    RefreshEnv
+    WingetInstall -Id "Flow-Launcher.Flow-Launcher"
 
     Info "Applying Flow Launcher configuration..."
 
@@ -235,9 +239,7 @@ function ApplyPowerShell {
 
 function ApplyFastfetch {
     Info "Installing Fastfetch..."
-
-    winget install -e --id Fastfetch-cli.Fastfetch
-    RefreshEnv
+    WingetInstall -Id "Fastfetch-cli.Fastfetch"
 
     Info "Applying fastfetch configuration..."
     New-Symlink -Source "$PSScriptRoot\..\fastfetch" -Destination "$env:USERPROFILE\.config\fastfetch"
@@ -247,9 +249,7 @@ function ApplyFastfetch {
 
 function ApplyPowerToys {
     Info "Installing PowerToys..."
-
-    winget install -e --id Microsoft.PowerToys --source winget
-    RefreshEnv
+    WingetInstall -Id "Microsoft.PowerToys"
 
     Info "Applying PowerToys configuration..."
 
@@ -288,9 +288,7 @@ function ApplyPowerToys {
 
 function ApplyCava {
     Info "Installing Cava..."
-
-    winget install -e --id karlstav.cava
-    RefreshEnv
+    WingetInstall -Id "karlstav.cava"
 
     Info "Applying Cava configuration..."
     New-Symlink -Source "$PSScriptRoot\..\cava" -Destination "$env:USERPROFILE\.config\cava"

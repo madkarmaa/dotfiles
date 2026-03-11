@@ -11,6 +11,16 @@ function RefreshEnv {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "User") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "Machine")
 }
 
+function WingetInstall {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Id
+    )
+
+    winget install -e --id $Id.Trim() --source winget --accept-source-agreements --accept-package-agreements
+    RefreshEnv
+}
+
 function IsAdmin {
     return ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
@@ -29,9 +39,7 @@ $ProgressPreference = "SilentlyContinue"
 
 if (-not (Get-Command git.exe -ErrorAction SilentlyContinue)) {
     Warning "Git is not installed. Installing..."
-
-    winget install -e --id Git.Git --source winget
-    RefreshEnv
+    WingetInstall -Id "Git.Git"
 }
 
 if (-not (Test-Path $TARGET_DIR)) {
