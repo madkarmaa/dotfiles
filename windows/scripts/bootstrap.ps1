@@ -30,6 +30,8 @@ function RelaunchAsAdmin {
     exit
 }
 
+Set-ExecutionPolicy Bypass -Scope Process
+
 if (-not (IsAdmin)) {
     RelaunchAsAdmin
 }
@@ -59,4 +61,4 @@ if (-not (Test-Path "$TARGET_DIR\windows\scripts\apply.ps1")) {
 
 $ProgressPreference = $OriginalProgressPreference
 
-& "$TARGET_DIR\windows\scripts\apply.ps1"
+. "$TARGET_DIR\windows\scripts\apply.ps1"

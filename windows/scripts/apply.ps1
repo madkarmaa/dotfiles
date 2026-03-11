@@ -384,6 +384,8 @@ function RelaunchScript {
     exit
 }
 
+Set-ExecutionPolicy Bypass -Scope Process
+
 if (-not (IsAdmin)) {
     RelaunchScript -ScriptPath $MyInvocation.MyCommand.Path
 }
