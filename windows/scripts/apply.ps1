@@ -163,9 +163,12 @@ function DownloadLatestGitHubReleaseFile {
     }
 
     if ($downloadUrl) {
-        Invoke-WebRequest -Uri $downloadUrl -OutFile (Join-Path -Path $OutDir -ChildPath (Split-Path -Path $downloadUrl -Leaf))
+        $outPath = Join-Path -Path $OutDir -ChildPath (Split-Path -Path $downloadUrl -Leaf)
+        Invoke-WebRequest -Uri $downloadUrl -OutFile $outPath
+        return $outPath
     } else {
         Warning "File not found matching pattern: $FilePattern"
+        return $null
     }
 }
 
@@ -338,7 +341,7 @@ function InstallAcrylicMenus {
     Info "Installing AcrylicMenus..."
 
     $fileName = "AcrylicMenus.zip"
-    DownloadLatestGitHubReleaseFile -User "krlvm" -Repo "AcrylicMenus" -FilePattern $fileName -OutDir $env:TEMP
+    $zipPath = DownloadLatestGitHubReleaseFile -User "krlvm" -Repo "AcrylicMenus" -FilePattern $fileName -OutDir $env:TEMP
 
     $LOCAL_INSTALLATION_PATH="$env:LOCALAPPDATA\AcrylicMenus"
     $GLOBAL_INSTALLATION_PATH="$env:PROGRAMFILES\AcrylicMenus"
