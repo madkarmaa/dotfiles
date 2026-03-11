@@ -11,7 +11,7 @@ My desktop setup configuration files for both **Windows** ~~and **Linux** (soon)
 
 ### 🚀 Apply configurations
 
-Run this command in PowerShell to automatically install the required software and apply the configurations:
+Run this command in a **PowerShell** session to automatically install the required software and apply the configurations:
 
 ```
 irm madkarma.top/dotfiles/win | iex
