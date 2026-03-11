@@ -3,6 +3,10 @@ function Success { param([string]$Message) Write-Host "[+] $Message" -Foreground
 function Warning { param([string]$Message) Write-Host "[!] $Message" -ForegroundColor Yellow }
 function Failure { param([string]$Message) Write-Host "[-] $Message" -ForegroundColor Red }
 
+function RefreshEnv {
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "User") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+}
+
 function New-DestDir {
     param (
         [Parameter(Mandatory = $true)]
@@ -137,7 +141,9 @@ function FindLatestGitHubReleaseFile {
 
 function ApplyWindhawk {
     Info "Installing Windhawk..."
+
     winget install -e --id RamenSoftware.Windhawk
+    RefreshEnv
 
     Info "Applying Windhawk configuration..."
 
@@ -149,8 +155,9 @@ function ApplyWindhawk {
 
 function ApplyYasb {
     Info "Installing YASB..."
-    # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
+
     winget install -e --id AmN.yasb
+    RefreshEnv
 
     Info "Applying yasb configuration..."
 
@@ -167,7 +174,9 @@ function ApplyYasb {
 
 function ApplyFlowLauncher {
     Info "Installing Flow Launcher..."
+
     winget install -e --id Flow-Launcher.Flow-Launcher
+    RefreshEnv
 
     Info "Applying Flow Launcher configuration..."
 
@@ -227,8 +236,9 @@ function ApplyPowerShell {
 
 function ApplyFastfetch {
     Info "Installing Fastfetch..."
-    # https://github.com/fastfetch-cli/fastfetch?tab=readme-ov-file#windows
+
     winget install -e --id Fastfetch-cli.Fastfetch
+    RefreshEnv
 
     Info "Applying fastfetch configuration..."
     New-Symlink -Source "$PSScriptRoot\..\fastfetch" -Destination "$env:USERPROFILE\.config\fastfetch"
@@ -238,8 +248,9 @@ function ApplyFastfetch {
 
 function ApplyPowerToys {
     Info "Installing PowerToys..."
-    # https://learn.microsoft.com/en-us/windows/powertoys/install#install-with-windows-package-manager
+
     winget install -e --id Microsoft.PowerToys --source winget
+    RefreshEnv
 
     Info "Applying PowerToys configuration..."
 
@@ -278,7 +289,9 @@ function ApplyPowerToys {
 
 function ApplyCava {
     Info "Installing Cava..."
+
     winget install -e --id karlstav.cava
+    RefreshEnv
 
     Info "Applying Cava configuration..."
     New-Symlink -Source "$PSScriptRoot\..\cava" -Destination "$env:USERPROFILE\.config\cava"
