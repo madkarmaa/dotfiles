@@ -24,10 +24,8 @@ $OriginalProgressPreference = $ProgressPreference
 $ProgressPreference = "SilentlyContinue"
 
 if (-not (Get-Command git.exe -ErrorAction SilentlyContinue)) {
-    Failure "Git is not installed. Please install it first."
-    Write-Host "`nPress any key to exit..."
-    [void][System.Console]::ReadKey($true)
-    exit 1
+    Warning "Git is not installed. Installing..."
+    winget install -e --id Git.Git --source winget
 }
 
 if (-not (Test-Path $TARGET_DIR)) {
