@@ -138,27 +138,61 @@ function HighPriorityTask {
     Remove-Item -Path $xmlPath -Force
 }
 
-function FindLatestGitHubReleaseFile {
+function DownloadLatestGitHubReleaseFile {
     param (
         [Parameter(Mandatory = $true)]
         [string]$User,
         [Parameter(Mandatory = $true)]
         [string]$Repo,
         [Parameter(Mandatory = $true)]
-        [string]$FilePattern
+        [string]$FilePattern,
+        [Parameter(Mandatory = $true)]
+        [string]$OutDir
     )
 
     $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/$($User.Trim())/$($Repo.Trim())/releases"
 
+    $downloadUrl = $null
     foreach ($release in $releases) {
         foreach ($asset in $release.assets) {
             if ($asset.name -like $FilePattern) {
-                return $asset.browser_download_url
+                $downloadUrl = $asset.browser_download_url
+                break
             }
         }
     }
 
-    return $null
+    if ($downloadUrl) {
+        Invoke-WebRequest -Uri $downloadUrl -OutFile (Join-Path -Path $OutDir -ChildPath (Split-Path -Path $downloadUrl -Leaf))
+    } else {
+        Warning "File not found matching pattern: $FilePattern"
+    }
+}
+
+function InstallFont {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$FontPath
+    )
+
+    $fontFile = Get-Item $FontPath.Trim() -ErrorAction Stop
+    $fontsFolder = "$env:WINDIR\Fonts"
+
+    $suffix = if ($fontFile.Extension.ToLower() -eq ".ttf") { " (TrueType)" } elseif ($fontFile.Extension.ToLower() -eq ".otf") { " (OpenType)" } else { "" }
+    $fontName = $fontFile.BaseName + $suffix
+
+    $destinationPath = Join-Path -Path $fontsFolder -ChildPath $fontFile.Name
+
+    if (-not (Test-Path -Path $destinationPath)) {
+        Copy-Item -Path $FontPath.Trim() -Destination $destinationPath
+
+        $regKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+        New-ItemProperty -Path $regKey -Name $fontName -Value $fontFile.Name -PropertyType String | Out-Null
+
+        Success "Installed font: $fontName"
+    } else {
+        Info "Font already installed: $fontName"
+    }
 }
 
 function ApplyWindhawk {
@@ -304,18 +338,7 @@ function InstallAcrylicMenus {
     Info "Installing AcrylicMenus..."
 
     $fileName = "AcrylicMenus.zip"
-    $asset = FindLatestGitHubReleaseFile -User "krlvm" -Repo "AcrylicMenus" -FilePattern $fileName
-
-    if (-not $asset) {
-        Failure "$fileName not found in the releases"
-        return
-    }
-
-    Stop-ScheduledTask -TaskName "AcrylicMenus" -ErrorAction SilentlyContinue
-    Get-Process -Name "AcrylicMenusLoader" -ErrorAction SilentlyContinue | Stop-Process -Force
-
-    $zipPath = "$env:TEMP\$fileName"
-    Invoke-WebRequest -Uri $asset -OutFile $zipPath
+    DownloadLatestGitHubReleaseFile -User "krlvm" -Repo "AcrylicMenus" -FilePattern $fileName -OutDir $env:TEMP
 
     $LOCAL_INSTALLATION_PATH="$env:LOCALAPPDATA\AcrylicMenus"
     $GLOBAL_INSTALLATION_PATH="$env:PROGRAMFILES\AcrylicMenus"
