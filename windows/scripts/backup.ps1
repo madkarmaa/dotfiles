@@ -57,7 +57,7 @@ if (Test-Path "HKLM:\SOFTWARE\Windhawk\Engine\Mods") {
         foreach ($mod in $mods) {
             $regPath = "HKLM\SOFTWARE\Windhawk\Engine\Mods\$mod\Settings"
             $tempFile = "$env:TEMP\temp_$mod.reg"
-            reg export $regPath $tempFile 2>$null | Out-Null
+            reg export $regPath $tempFile | Out-Null
 
             if (Test-Path $tempFile) {
                 Get-Content $tempFile | Select-Object -Skip 1 | Add-Content -Path $windhawkRegBackupPath
