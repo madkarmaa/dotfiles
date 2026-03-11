@@ -353,6 +353,7 @@ function InstallAcrylicMenus {
     }
 
     if (Test-Path $installationPath) {
+        Get-Process -Name AcrylicMenusLoader -ErrorAction SilentlyContinue | Stop-Process -Force
         Remove-Item -Path $installationPath -Recurse -Force
     }
 
