@@ -1,4 +1,4 @@
-My desktop setup configuration files for both **Windows** and ~~**Linux** (soon)~~
+My desktop setup configuration files for both **Windows** ~~and **Linux** (soon)~~
 
 ## 🔤 Fonts
 
@@ -13,7 +13,7 @@ My desktop setup configuration files for both **Windows** and ~~**Linux** (soon)
 
 Run this command in PowerShell to automatically install the required software and apply the configurations:
 
-```powershell
+```
 irm madkarma.top/dotfiles/win | iex
 ```
 
@@ -25,31 +25,31 @@ irm madkarma.top/dotfiles/win | iex
 - **[Cava](https://github.com/karlstav/cava)**
 
 ```
-winget install -e --id karlstav.cava
+winget install -e --id karlstav.cava --source winget
 ```
 
 - **[Windhawk](https://windhawk.net)**
 
 ```
-winget install -e --id RamenSoftware.Windhawk
+winget install -e --id RamenSoftware.Windhawk --source winget
 ```
 
 - **[YASB](https://github.com/amnweb/yasb)**
 
 ```
-winget install -e --id AmN.yasb
+winget install -e --id AmN.yasb --source winget
 ```
 
 - **[Flow Launcher](https://github.com/Flow-Launcher/Flow.Launcher)**
 
 ```
-winget install -e --id Flow-Launcher.Flow-Launcher
+winget install -e --id Flow-Launcher.Flow-Launcher --source winget
 ```
 
 - **[Fastfetch](https://github.com/fastfetch-cli/fastfetch)**
 
 ```
-winget install -e --id Fastfetch-cli.Fastfetch
+winget install -e --id Fastfetch-cli.Fastfetch --source winget
 ```
 
 - **[PowerToys](https://learn.microsoft.com/en-us/windows/powertoys/install#install-with-windows-package-manager)**
