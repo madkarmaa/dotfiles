@@ -17,7 +17,7 @@ function WingetInstall {
         [string]$Id
     )
 
-    winget install -e --id $Id.Trim() --source winget --accept-source-agreements --accept-package-agreements
+    winget install -e --id $Id.Trim() --source winget --silent --accept-source-agreements --accept-package-agreements
     RefreshEnv
 }
 
