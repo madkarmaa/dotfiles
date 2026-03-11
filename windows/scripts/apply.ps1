@@ -97,6 +97,19 @@ function TaskbarAutoHide {
     Get-Process -Name explorer -ErrorAction SilentlyContinue | Stop-Process -Force
 }
 
+function DesktopIcons {
+    param (
+        [Parameter(Mandatory = $true)]
+        [bool]$Show
+    )
+
+    $path = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+    Set-ItemProperty -Path $path -Name HideIcons -Value ([int](-not $Show))
+
+    # restart explorer to apply the registry changes
+    Get-Process -Name explorer -ErrorAction SilentlyContinue | Stop-Process -Force
+}
+
 function HighPriorityTask {
     param (
         [Parameter(Mandatory = $true)]
@@ -351,6 +364,8 @@ if (-not (IsAdmin)) {
 $OriginalProgressPreference = $ProgressPreference
 $ProgressPreference = "SilentlyContinue"
 
+DesktopIcons -Show $false
+
 ApplyWindhawk
 ApplyYasb
 ApplyFlowLauncher
@@ -358,6 +373,7 @@ ApplyPowerShell
 ApplyFastfetch
 ApplyCava
 ApplyPowerToys
+
 InstallAcrylicMenus -SystemWide $true
 
 Success "All configurations applied successfully!"
