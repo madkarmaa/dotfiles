@@ -265,7 +265,7 @@ function ApplyPowerToys {
     $item.LastWriteTimeUtc = $nowDt
     $item.LastAccessTimeUtc = $nowDt
 
-    Warning "Please restore the settings from the PowerToys Settings, under General > Backup & Restore"
+    Warning "Please restore the backup from the PowerToys Settings page, under General > Backup & Restore > Restore"
     Success "PowerToys configuration applied"
 }
 
