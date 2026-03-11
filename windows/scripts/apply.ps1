@@ -4,7 +4,7 @@ function Warning { param([string]$Message) Write-Host "[!] $Message" -Foreground
 function Failure { param([string]$Message) Write-Host "[-] $Message" -ForegroundColor Red }
 
 function RefreshEnv {
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "User") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+    $env:Path = [System.Environment]::GetEnvironmentVariable('Path', 'User') + ';' + [System.Environment]::GetEnvironmentVariable('Path', 'Machine')
 }
 
 function WingetInstall {
@@ -54,7 +54,8 @@ function New-Symlink {
         $item = Get-Item $Destination -Force
         if ($item.LinkType) {
             $item.Delete()
-        } else {
+        }
+        else {
             Remove-Item -Path $Destination -Recurse -Force
         }
     }
@@ -68,13 +69,14 @@ function AddToUserPath {
         [string]$NewPath
     )
 
-    $currentPath = [Environment]::GetEnvironmentVariable("Path", "User")
+    $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
 
     if ($currentPath.Split(';') -notcontains $NewPath) {
         $updatedPath = "$currentPath;$NewPath"
-        [Environment]::SetEnvironmentVariable("Path", $updatedPath, "User")
+        [Environment]::SetEnvironmentVariable('Path', $updatedPath, 'User')
         Success "Added '$NewPath' to user PATH"
-    } else {
+    }
+    else {
         Info "'$NewPath' is already in user PATH"
     }
 }
@@ -123,13 +125,14 @@ function HighPriorityTask {
     $user = "$env:USERDOMAIN\$env:USERNAME";
 
     if ($RunAsAdmin) {
-        $runLevel = "HighestAvailable"
-    } else {
-        $runLevel = "LeastPrivilege"
+        $runLevel = 'HighestAvailable'
+    }
+    else {
+        $runLevel = 'LeastPrivilege'
     }
 
-    $xmlContent = (Get-Content "$PSScriptRoot\HighPriority.xml").Trim().Replace("{{user}}", $user).Replace("{{program}}", $ProgramPath.Trim()).Replace("{{name}}", $TaskName.Trim().Replace(" ", "")).Replace("{{runLevel}}", $runLevel)
-    $safeTaskName = $TaskName.Trim().Replace(" ", "_")
+    $xmlContent = (Get-Content "$PSScriptRoot\HighPriority.xml").Trim().Replace('{{user}}', $user).Replace('{{program}}', $ProgramPath.Trim()).Replace('{{name}}', $TaskName.Trim().Replace(' ', '')).Replace('{{runLevel}}', $runLevel)
+    $safeTaskName = $TaskName.Trim().Replace(' ', '_')
     $xmlPath = "$env:TEMP\HighPriority_$safeTaskName.xml"
     $xmlContent | Out-File -FilePath $xmlPath -Encoding Unicode
 
@@ -166,7 +169,8 @@ function DownloadLatestGitHubReleaseFile {
         $outPath = Join-Path -Path $OutDir -ChildPath (Split-Path -Path $downloadUrl -Leaf)
         Invoke-WebRequest -Uri $downloadUrl -OutFile $outPath
         return $outPath
-    } else {
+    }
+    else {
         Warning "File not found matching pattern: $FilePattern"
         return $null
     }
@@ -181,7 +185,7 @@ function InstallFont {
     $fontFile = Get-Item $FontPath.Trim() -ErrorAction Stop
     $fontsFolder = "$env:WINDIR\Fonts"
 
-    $suffix = if ($fontFile.Extension.ToLower() -eq ".ttf") { " (TrueType)" } elseif ($fontFile.Extension.ToLower() -eq ".otf") { " (OpenType)" } else { "" }
+    $suffix = if ($fontFile.Extension.ToLower() -eq '.ttf') { ' (TrueType)' } elseif ($fontFile.Extension.ToLower() -eq '.otf') { ' (OpenType)' } else { '' }
     $fontName = $fontFile.BaseName + $suffix
 
     $destinationPath = Join-Path -Path $fontsFolder -ChildPath $fontFile.Name
@@ -189,34 +193,35 @@ function InstallFont {
     if (-not (Test-Path -Path $destinationPath)) {
         Copy-Item -Path $FontPath.Trim() -Destination $destinationPath
 
-        $regKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+        $regKey = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts'
         New-ItemProperty -Path $regKey -Name $fontName -Value $fontFile.Name -PropertyType String | Out-Null
 
         Success "Installed font: $fontName"
-    } else {
+    }
+    else {
         Info "Font already installed: $fontName"
     }
 }
 
 function ApplyWindhawk {
-    Info "Installing Windhawk..."
-    WingetInstall -Id "RamenSoftware.Windhawk"
+    Info 'Installing Windhawk...'
+    WingetInstall -Id 'RamenSoftware.Windhawk'
 
-    Info "Applying Windhawk configuration..."
+    Info 'Applying Windhawk configuration...'
 
     regedit.exe /s "$PSScriptRoot\..\windhawk\settings.reg"
-    Start-Process "C:\Program Files\Windhawk\windhawk.exe" -ArgumentList @("-restart", "-tray-only")
+    Start-Process 'C:\Program Files\Windhawk\windhawk.exe' -ArgumentList @('-restart', '-tray-only')
 
-    Success "Windhawk configuration applied"
+    Success 'Windhawk configuration applied'
 }
 
 function ApplyYasb {
-    Info "Installing YASB..."
-    WingetInstall -Id "AmN.yasb"
+    Info 'Installing YASB...'
+    WingetInstall -Id 'AmN.yasb'
 
-    Info "Applying yasb configuration..."
+    Info 'Applying yasb configuration...'
 
-    HighPriorityTask -ProgramPath "C:\Program Files\YASB\yasb.exe" -TaskName "YASB" -RunAsAdmin $true
+    HighPriorityTask -ProgramPath 'C:\Program Files\YASB\yasb.exe' -TaskName 'YASB' -RunAsAdmin $true
 
     New-Symlink -Source "$PSScriptRoot\..\yasb" -Destination "$env:USERPROFILE\.config\yasb"
     TaskbarAutoHide -Enable $true
@@ -227,22 +232,22 @@ function ApplyYasb {
     # reload yasb or else the windows' top bar will be shown under it
     yasbc.exe reload | Out-Null
 
-    Success "YASB configuration applied"
+    Success 'YASB configuration applied'
 }
 
 function ApplyFlowLauncher {
-    Info "Installing Flow Launcher..."
-    WingetInstall -Id "Flow-Launcher.Flow-Launcher"
+    Info 'Installing Flow Launcher...'
+    WingetInstall -Id 'Flow-Launcher.Flow-Launcher'
 
-    Info "Applying Flow Launcher configuration..."
+    Info 'Applying Flow Launcher configuration...'
 
-    HighPriorityTask -ProgramPath "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe" -TaskName "FlowLauncher" -RunAsAdmin $false
+    HighPriorityTask -ProgramPath "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe" -TaskName 'FlowLauncher' -RunAsAdmin $false
 
     Get-Process -Name Flow.Launcher -ErrorAction SilentlyContinue | Stop-Process -Force
 
     New-Symlink -Source "$PSScriptRoot\..\flowlauncher\Settings" -Destination "$env:APPDATA\FlowLauncher\Settings"
 
-    $ONLINE_PLUGINS = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/Flow-Launcher/Flow.Launcher.PluginsManifest/main/plugins.json"
+    $ONLINE_PLUGINS = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/Flow-Launcher/Flow.Launcher.PluginsManifest/main/plugins.json'
     $CUSTOM_PLUGINS = Get-Content "$PSScriptRoot\..\flowlauncher\custom_plugins.json" -Raw | ConvertFrom-Json
 
     foreach ($ID in $CUSTOM_PLUGINS) {
@@ -253,13 +258,13 @@ function ApplyFlowLauncher {
             continue
         }
 
-        $Name    = $PluginData.Name
+        $Name = $PluginData.Name
         $Version = $PluginData.Version
-        $Url     = $PluginData.UrlDownload
+        $Url = $PluginData.UrlDownload
 
         $FolderName = "$Name-$Version"
-        $TargetDir  = "$env:APPDATA\FlowLauncher\Plugins\$FolderName"
-        $ZipPath    = "$env:TEMP\$ID.zip"
+        $TargetDir = "$env:APPDATA\FlowLauncher\Plugins\$FolderName"
+        $ZipPath = "$env:TEMP\$ID.zip"
 
         if (Test-Path $TargetDir) {
             Info "Skipping '$FolderName' (already exists)"
@@ -273,13 +278,13 @@ function ApplyFlowLauncher {
         Remove-Item $ZipPath -Force
     }
 
-    Start-ScheduledTask -TaskName "FlowLauncher"
+    Start-ScheduledTask -TaskName 'FlowLauncher'
 
-    Success "Flow Launcher configuration applied"
+    Success 'Flow Launcher configuration applied'
 }
 
 function ApplyPowerShell {
-    Info "Applying PowerShell profile..."
+    Info 'Applying PowerShell profile...'
 
     New-DestDir "$env:USERPROFILE\Documents\PowerShell" | Out-Null
     New-DestDir "$env:USERPROFILE\Documents\WindowsPowerShell" | Out-Null
@@ -287,24 +292,24 @@ function ApplyPowerShell {
     New-Symlink -Source "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
     New-Symlink -Source "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination "$env:USERPROFILE\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
-    Success "PowerShell profile applied"
+    Success 'PowerShell profile applied'
 }
 
 function ApplyFastfetch {
-    Info "Installing Fastfetch..."
-    WingetInstall -Id "Fastfetch-cli.Fastfetch"
+    Info 'Installing Fastfetch...'
+    WingetInstall -Id 'Fastfetch-cli.Fastfetch'
 
-    Info "Applying fastfetch configuration..."
+    Info 'Applying fastfetch configuration...'
     New-Symlink -Source "$PSScriptRoot\..\fastfetch" -Destination "$env:USERPROFILE\.config\fastfetch"
 
-    Success "Fastfetch configuration applied"
+    Success 'Fastfetch configuration applied'
 }
 
 function ApplyPowerToys {
-    Info "Installing PowerToys..."
-    WingetInstall -Id "Microsoft.PowerToys"
+    Info 'Installing PowerToys...'
+    WingetInstall -Id 'Microsoft.PowerToys'
 
-    Info "Applying PowerToys configuration..."
+    Info 'Applying PowerToys configuration...'
 
     $nowDt = [DateTime]::UtcNow
     $nowFt = $nowDt.ToFileTimeUtc()
@@ -314,22 +319,22 @@ function ApplyPowerToys {
     Copy-Item "$PSScriptRoot\..\powertoys\backup.ptb" -Destination $dest -Force
 
     $item = Get-Item $dest
-    $item.CreationTimeUtc  = $nowDt
+    $item.CreationTimeUtc = $nowDt
     $item.LastWriteTimeUtc = $nowDt
     $item.LastAccessTimeUtc = $nowDt
 
-    Warning "Please restore the backup from the PowerToys Settings page, under General > Backup & Restore > Restore"
-    Success "PowerToys configuration applied"
+    Warning 'Please restore the backup from the PowerToys Settings page, under General > Backup & Restore > Restore'
+    Success 'PowerToys configuration applied'
 }
 
 function ApplyCava {
-    Info "Installing Cava..."
-    WingetInstall -Id "karlstav.cava"
+    Info 'Installing Cava...'
+    WingetInstall -Id 'karlstav.cava'
 
-    Info "Applying Cava configuration..."
+    Info 'Applying Cava configuration...'
     New-Symlink -Source "$PSScriptRoot\..\cava" -Destination "$env:USERPROFILE\.config\cava"
 
-    Success "Cava configuration applied"
+    Success 'Cava configuration applied'
 }
 
 function InstallAcrylicMenus {
@@ -338,17 +343,18 @@ function InstallAcrylicMenus {
         [bool]$SystemWide
     )
 
-    Info "Installing AcrylicMenus..."
+    Info 'Installing AcrylicMenus...'
 
-    $fileName = "AcrylicMenus.zip"
-    $zipPath = DownloadLatestGitHubReleaseFile -User "krlvm" -Repo "AcrylicMenus" -FilePattern $fileName -OutDir $env:TEMP
+    $fileName = 'AcrylicMenus.zip'
+    $zipPath = DownloadLatestGitHubReleaseFile -User 'krlvm' -Repo 'AcrylicMenus' -FilePattern $fileName -OutDir $env:TEMP
 
-    $LOCAL_INSTALLATION_PATH="$env:LOCALAPPDATA\AcrylicMenus"
-    $GLOBAL_INSTALLATION_PATH="$env:PROGRAMFILES\AcrylicMenus"
+    $LOCAL_INSTALLATION_PATH = "$env:LOCALAPPDATA\AcrylicMenus"
+    $GLOBAL_INSTALLATION_PATH = "$env:PROGRAMFILES\AcrylicMenus"
 
     if ($SystemWide) {
         $installationPath = $GLOBAL_INSTALLATION_PATH
-    } else {
+    }
+    else {
         $installationPath = $LOCAL_INSTALLATION_PATH
     }
 
@@ -360,13 +366,14 @@ function InstallAcrylicMenus {
     Expand-Archive -Path $zipPath -DestinationPath $installationPath -Force
     Remove-Item -Path $zipPath -Force
 
-    HighPriorityTask -ProgramPath "$installationPath\AcrylicMenusLoader.exe" -TaskName "AcrylicMenus" -RunAsAdmin $true
-    Start-ScheduledTask -TaskName "AcrylicMenus"
+    HighPriorityTask -ProgramPath "$installationPath\AcrylicMenusLoader.exe" -TaskName 'AcrylicMenus' -RunAsAdmin $true
+    Start-ScheduledTask -TaskName 'AcrylicMenus'
 
     if ($SystemWide) {
-        Success "AcrylicMenus installed successfully for all users"
-    } else {
-        Success "AcrylicMenus installed successfully for the current user"
+        Success 'AcrylicMenus installed successfully for all users'
+    }
+    else {
+        Success 'AcrylicMenus installed successfully for the current user'
     }
 }
 
@@ -391,7 +398,7 @@ if (-not (IsAdmin)) {
 }
 
 $OriginalProgressPreference = $ProgressPreference
-$ProgressPreference = "SilentlyContinue"
+$ProgressPreference = 'SilentlyContinue'
 
 DesktopIcons -Show $false
 
@@ -405,7 +412,7 @@ ApplyPowerToys
 
 InstallAcrylicMenus -SystemWide $true
 
-Success "All configurations applied successfully!"
+Success 'All configurations applied successfully!'
 
 $ProgressPreference = $OriginalProgressPreference
 

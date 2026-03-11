@@ -39,19 +39,20 @@ function Backup-Path {
 $backedUp = @()
 $skipped = @()
 
-Info "Backing up YASB..."
-if (Backup-Path "$env:USERPROFILE\.config\yasb\*" (New-Subdir "yasb") -Recurse -Exclude "*.log*") {
-    $backedUp += "YASB"
-} else {
-    $skipped += "YASB"
+Info 'Backing up YASB...'
+if (Backup-Path "$env:USERPROFILE\.config\yasb\*" (New-Subdir 'yasb') -Recurse -Exclude '*.log*') {
+    $backedUp += 'YASB'
+}
+else {
+    $skipped += 'YASB'
 }
 
-Info "Backing up Windhawk..."
-if (Test-Path "HKLM:\SOFTWARE\Windhawk\Engine\Mods") {
-    $mods = Get-ChildItem "HKLM:\SOFTWARE\Windhawk\Engine\Mods" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty PSChildName
+Info 'Backing up Windhawk...'
+if (Test-Path 'HKLM:\SOFTWARE\Windhawk\Engine\Mods') {
+    $mods = Get-ChildItem 'HKLM:\SOFTWARE\Windhawk\Engine\Mods' -ErrorAction SilentlyContinue | Select-Object -ExpandProperty PSChildName
 
     if ($mods) {
-        $windhawkRegBackupPath = Join-Path (New-Subdir "windhawk") "settings.reg"
+        $windhawkRegBackupPath = Join-Path (New-Subdir 'windhawk') 'settings.reg'
         "Windows Registry Editor Version 5.00`n" | Out-File -FilePath $windhawkRegBackupPath -Encoding Unicode
 
         foreach ($mod in $mods) {
@@ -65,32 +66,34 @@ if (Test-Path "HKLM:\SOFTWARE\Windhawk\Engine\Mods") {
             }
 
             $modPath = "HKLM:\SOFTWARE\Windhawk\Engine\Mods\$mod"
-            $disabled = Get-ItemProperty -Path $modPath -Name "Disabled" -ErrorAction SilentlyContinue
+            $disabled = Get-ItemProperty -Path $modPath -Name 'Disabled' -ErrorAction SilentlyContinue
 
             if ($disabled) {
                 "[HKEY_LOCAL_MACHINE\SOFTWARE\Windhawk\Engine\Mods\$mod]" | Add-Content -Path $windhawkRegBackupPath
                 $value = $disabled.Disabled
                 "`"Disabled`"=dword:$('{0:x8}' -f $value)" | Add-Content -Path $windhawkRegBackupPath
-                "" | Add-Content -Path $windhawkRegBackupPath
+                '' | Add-Content -Path $windhawkRegBackupPath
             }
         }
-        $backedUp += "Windhawk"
-    } else {
-        $skipped += "Windhawk (no mods found)"
+        $backedUp += 'Windhawk'
     }
-} else {
-    $skipped += "Windhawk (not installed)"
+    else {
+        $skipped += 'Windhawk (no mods found)'
+    }
+}
+else {
+    $skipped += 'Windhawk (not installed)'
 }
 
-Info "Backing up Flow Launcher..."
+Info 'Backing up Flow Launcher...'
 $FLOWLAUNCHER_SETTINGS = "$env:APPDATA\FlowLauncher\Settings\Settings.json"
 
 if (Test-Path $FLOWLAUNCHER_SETTINGS) {
-    Copy-Item $FLOWLAUNCHER_SETTINGS -Destination (New-Subdir "flowlauncher\Settings") -Force
+    Copy-Item $FLOWLAUNCHER_SETTINGS -Destination (New-Subdir 'flowlauncher\Settings') -Force
 
     $pluginsPath = "$env:APPDATA\FlowLauncher\Settings\Plugins\*"
     if (Test-Path $pluginsPath) {
-        Copy-Item $pluginsPath -Destination (New-Subdir "flowlauncher\Settings\Plugins") -Recurse -Force -Exclude "*.bak"
+        Copy-Item $pluginsPath -Destination (New-Subdir 'flowlauncher\Settings\Plugins') -Recurse -Force -Exclude '*.bak'
     }
 
     function CollectFlowLauncherPlugins {
@@ -120,45 +123,51 @@ if (Test-Path $FLOWLAUNCHER_SETTINGS) {
         return $CustomIDs
     }
 
-    (CollectFlowLauncherPlugins) | ConvertTo-Json | Set-Content -Path (Join-Path (New-Subdir "flowlauncher") "custom_plugins.json") -Encoding UTF8
-    $backedUp += "Flow Launcher"
-} else {
-    $skipped += "Flow Launcher (not installed)"
+    (CollectFlowLauncherPlugins) | ConvertTo-Json | Set-Content -Path (Join-Path (New-Subdir 'flowlauncher') 'custom_plugins.json') -Encoding UTF8
+    $backedUp += 'Flow Launcher'
+}
+else {
+    $skipped += 'Flow Launcher (not installed)'
 }
 
-Info "Backing up PowerShell profile..."
-if (Backup-Path "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" (New-Subdir "powershell")) {
-    $backedUp += "PowerShell profile"
-} else {
-    $skipped += "PowerShell profile"
+Info 'Backing up PowerShell profile...'
+if (Backup-Path "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" (New-Subdir 'powershell')) {
+    $backedUp += 'PowerShell profile'
+}
+else {
+    $skipped += 'PowerShell profile'
 }
 
-Info "Backing up Fastfetch..."
-if (Backup-Path "$env:USERPROFILE\.config\fastfetch\*" (New-Subdir "fastfetch") -Recurse) {
-    $backedUp += "Fastfetch"
-} else {
-    $skipped += "Fastfetch"
+Info 'Backing up Fastfetch...'
+if (Backup-Path "$env:USERPROFILE\.config\fastfetch\*" (New-Subdir 'fastfetch') -Recurse) {
+    $backedUp += 'Fastfetch'
+}
+else {
+    $skipped += 'Fastfetch'
 }
 
-Info "Backing up Cava..."
-if (Backup-Path "$env:USERPROFILE\.config\cava\config" (New-Subdir "cava")) {
-    $backedUp += "Cava"
-} else {
-    $skipped += "Cava"
+Info 'Backing up Cava...'
+if (Backup-Path "$env:USERPROFILE\.config\cava\config" (New-Subdir 'cava')) {
+    $backedUp += 'Cava'
+}
+else {
+    $skipped += 'Cava'
 }
 
-Info "Backing up PowerToys..."
+Info 'Backing up PowerToys...'
 $powerToysBackupPath = "$env:USERPROFILE\Documents\PowerToys\Backup"
 if (Test-Path $powerToysBackupPath) {
-    $latestPowerToysBackup = Get-ChildItem -Path $powerToysBackupPath -Filter "*.ptb" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    $latestPowerToysBackup = Get-ChildItem -Path $powerToysBackupPath -Filter '*.ptb' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
     if ($latestPowerToysBackup) {
-        Copy-Item $latestPowerToysBackup.FullName -Destination (Join-Path (New-Subdir "powertoys") "backup.ptb") -Force
-        $backedUp += "PowerToys"
-    } else {
-        $skipped += "PowerToys (no backup file found)"
+        Copy-Item $latestPowerToysBackup.FullName -Destination (Join-Path (New-Subdir 'powertoys') 'backup.ptb') -Force
+        $backedUp += 'PowerToys'
     }
-} else {
-    $skipped += "PowerToys (not installed)"
+    else {
+        $skipped += 'PowerToys (no backup file found)'
+    }
+}
+else {
+    $skipped += 'PowerToys (not installed)'
 }
 
 Write-Host
