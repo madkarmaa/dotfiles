@@ -1,44 +1,7 @@
-param (
-    [Parameter(Position = 0)]
-    [ValidateSet("windhawk", "yasb", "flowlauncher", "powershell", "fastfetch", "cava", "powertoys", "all")]
-    [string]$Feature = "all"
-)
-
-function Info {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$Message
-    )
-
-    Write-Host "[i] $Message"
-}
-
-function Success {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$Message
-    )
-
-    Write-Host "[+] $Message" -ForegroundColor Green
-}
-
-function Warning {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$Message
-    )
-
-    Write-Host "[!] $Message" -ForegroundColor Black -BackgroundColor Yellow
-}
-
-function Failure {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$Message
-    )
-
-    Write-Host "[-] $Message" -ForegroundColor White -BackgroundColor Red
-}
+function Info { param([string]$Message) Write-Host "[i] $Message" }
+function Success { param([string]$Message) Write-Host "[+] $Message" -ForegroundColor Green }
+function Warning { param([string]$Message) Write-Host "[!] $Message" -ForegroundColor Yellow }
+function Failure { param([string]$Message) Write-Host "[-] $Message" -ForegroundColor Red }
 
 function New-DestDir {
     param (
@@ -48,6 +11,42 @@ function New-DestDir {
 
     $dir = New-Item -Force -Type Directory -Path $Path
     return $dir.FullName
+}
+
+function New-Symlink {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Source,
+        [Parameter(Mandatory = $true)]
+        [string]$Destination
+    )
+
+    if (-not (Test-Path $Source)) {
+        Failure "Source path does not exist: $Source"
+        return $false
+    }
+
+    $resolvedSource = (Resolve-Path $Source).Path
+
+    # Ensure parent directory exists
+    $parentDir = Split-Path -Parent $Destination
+    if ($parentDir -and -not (Test-Path $parentDir)) {
+        New-Item -Force -Type Directory -Path $parentDir | Out-Null
+    }
+
+    # Remove existing item (symlink or physical file/folder)
+    # Use .Delete() for symlinks to avoid following the link
+    if (Test-Path $Destination) {
+        $item = Get-Item $Destination -Force
+        if ($item.LinkType) {
+            $item.Delete()
+        } else {
+            Remove-Item -Path $Destination -Recurse -Force
+        }
+    }
+
+    New-Item -ItemType SymbolicLink -Path $Destination -Target $resolvedSource -Force | Out-Null
+    return $true
 }
 
 function AddToUserPath {
@@ -104,7 +103,8 @@ function HighPriorityTask {
     }
 
     $xmlContent = (Get-Content "$PSScriptRoot\HighPriority.xml").Trim().Replace("{{user}}", $user).Replace("{{program}}", $ProgramPath.Trim()).Replace("{{name}}", $TaskName.Trim().Replace(" ", "")).Replace("{{runLevel}}", $runLevel)
-    $xmlPath = "$env:TEMP\yasb_task.xml"
+    $safeTaskName = $TaskName.Trim().Replace(" ", "_")
+    $xmlPath = "$env:TEMP\HighPriority_$safeTaskName.xml"
     $xmlContent | Out-File -FilePath $xmlPath -Encoding Unicode
 
     schtasks /create /f /tn $TaskName /xml "$xmlPath"
@@ -148,8 +148,6 @@ function ApplyWindhawk {
 }
 
 function ApplyYasb {
-    ApplyWindhawk # YASB requires Windhawk to be installed for it to look correct
-
     Info "Installing YASB..."
     # https://github.com/amnweb/yasb?tab=readme-ov-file#winget
     winget install -e --id AmN.yasb
@@ -158,7 +156,7 @@ function ApplyYasb {
 
     HighPriorityTask -ProgramPath "C:\Program Files\YASB\yasb.exe" -TaskName "YASB" -RunAsAdmin $true
 
-    Copy-Item "$PSScriptRoot\..\yasb\*" -Destination (New-DestDir "$env:USERPROFILE\.config\yasb") -Recurse -Force
+    New-Symlink -Source "$PSScriptRoot\..\yasb" -Destination "$env:USERPROFILE\.config\yasb"
     TaskbarAutoHide -Enable $true
 
     # reload yasb or else the windows' top bar will be shown under it
@@ -177,14 +175,18 @@ function ApplyFlowLauncher {
 
     Get-Process -Name Flow.Launcher -ErrorAction SilentlyContinue | Stop-Process -Force
 
-    Copy-Item "$PSScriptRoot\..\flowlauncher\*" -Destination (New-DestDir "$env:APPDATA\FlowLauncher") -Recurse -Force
-    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/R0gue301/MinFlow/refs/heads/main/MinFlow.xaml" -OutFile (Join-Path (New-DestDir "$env:APPDATA\FlowLauncher\Themes") "MinFlow.xaml")
+    New-Symlink -Source "$PSScriptRoot\..\flowlauncher\Settings" -Destination "$env:APPDATA\FlowLauncher\Settings"
 
     $ONLINE_PLUGINS = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/Flow-Launcher/Flow.Launcher.PluginsManifest/main/plugins.json"
     $CUSTOM_PLUGINS = Get-Content "$PSScriptRoot\..\flowlauncher\custom_plugins.json" -Raw | ConvertFrom-Json
 
     foreach ($ID in $CUSTOM_PLUGINS) {
         $PluginData = $ONLINE_PLUGINS | Where-Object { $_.ID -eq $ID }
+
+        if (-not $PluginData) {
+            Warning "Plugin '$ID' not found in manifest, skipping..."
+            continue
+        }
 
         $Name    = $PluginData.Name
         $Version = $PluginData.Version
@@ -214,8 +216,11 @@ function ApplyFlowLauncher {
 function ApplyPowerShell {
     Info "Applying PowerShell profile..."
 
-    Copy-Item "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\PowerShell") -Force
-    Copy-Item "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination (New-DestDir "$env:USERPROFILE\Documents\WindowsPowerShell") -Force
+    New-DestDir "$env:USERPROFILE\Documents\PowerShell" | Out-Null
+    New-DestDir "$env:USERPROFILE\Documents\WindowsPowerShell" | Out-Null
+
+    New-Symlink -Source "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
+    New-Symlink -Source "$PSScriptRoot\..\powershell\Microsoft.PowerShell_profile.ps1" -Destination "$env:USERPROFILE\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
     Success "PowerShell profile applied"
 }
@@ -226,7 +231,7 @@ function ApplyFastfetch {
     winget install -e --id Fastfetch-cli.Fastfetch
 
     Info "Applying fastfetch configuration..."
-    Copy-Item "$PSScriptRoot\..\fastfetch\*" -Destination (New-DestDir "$env:USERPROFILE\.config\fastfetch") -Recurse -Force
+    New-Symlink -Source "$PSScriptRoot\..\fastfetch" -Destination "$env:USERPROFILE\.config\fastfetch"
 
     Success "Fastfetch configuration applied"
 }
@@ -272,36 +277,12 @@ function ApplyPowerToys {
 }
 
 function ApplyCava {
-    $isCavaInstalled = Get-Command cava -ErrorAction SilentlyContinue
-
-    if (-not $isCavaInstalled) {
-        Info "Installing Cava..."
-
-        # Cava has a winget package but it's outdated, so we download the releases from GitHub
-        $fileName = "cava_win_x64_install.exe"
-        $asset = FindLatestGitHubReleaseFile -User "karlstav" -Repo "cava" -FilePattern $fileName
-
-        if (-not $asset) {
-            Failure "$fileName not found in the releases"
-            return
-        }
-
-        $outputPath = "$env:TEMP\$fileName"
-        Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $outputPath
-        Start-Process -FilePath $outputPath -ArgumentList @("/VERYSILENT", "/NOICONS") -Wait
-        Remove-Item -Path $outputPath -Force
-    } else {
-        Info "Cava is already installed"
-    }
-
-    # add cava to user path even if already installed to ensure it's there
-    AddToUserPath -NewPath "$env:LOCALAPPDATA\Programs\cava"
-
-    Info "Installing Microsoft Visual C++ 2012 Redistributable..."
-    winget install -e --id Microsoft.VCRedist.2012.x64
+    Info "Installing Cava..."
+    winget install -e --id karlstav.cava
 
     Info "Applying Cava configuration..."
-    Copy-Item "$PSScriptRoot\..\cava\config" -Destination (New-DestDir "$env:USERPROFILE\.config\cava") -Force
+    New-Symlink -Source "$PSScriptRoot\..\cava" -Destination "$env:USERPROFILE\.config\cava"
+
     Success "Cava configuration applied"
 }
 
@@ -360,55 +341,30 @@ function IsAdmin {
 function RelaunchScript {
     param (
         [Parameter(Mandatory = $true)]
-        [string]$ScriptPath,
-
-        [Parameter(Mandatory = $true)]
-        [hashtable]$BoundParameters,
-
-        [Parameter(Mandatory = $false)]
-        [object[]]$UnboundArguments = @()
+        [string]$ScriptPath
     )
 
-    $argList = @()
-    foreach ($param in $BoundParameters.GetEnumerator()) {
-        $argList += "-$($param.Key)"
-        $argList += "`"$($param.Value)`""
-    }
-
-    $argList += $UnboundArguments
-
-    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`" $argList" -Verb RunAs
+    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`"" -Verb RunAs
     exit
 }
 
 if (-not (IsAdmin)) {
-    RelaunchScript -ScriptPath $MyInvocation.MyCommand.Path -BoundParameters $MyInvocation.BoundParameters -UnboundArguments $args
+    RelaunchScript -ScriptPath $MyInvocation.MyCommand.Path
 }
 
 $OriginalProgressPreference = $ProgressPreference
 $ProgressPreference = "SilentlyContinue"
 
+ApplyWindhawk
+ApplyYasb
+ApplyFlowLauncher
+ApplyPowerShell
+ApplyFastfetch
+ApplyCava
+ApplyPowerToys
 InstallAcrylicMenus -SystemWide $true
 
-switch ($Feature) {
-    "windhawk" { ApplyWindhawk }
-    "yasb" { ApplyYasb }
-    "flowlauncher" { ApplyFlowLauncher }
-    "powershell" { ApplyPowerShell }
-    "fastfetch" { ApplyFastfetch }
-    "cava" { ApplyCava }
-    "powertoys" { ApplyPowerToys }
-    "all" {
-        ApplyWindhawk
-        ApplyYasb
-        ApplyFlowLauncher
-        ApplyPowerShell
-        ApplyFastfetch
-        ApplyCava
-        ApplyPowerToys
-        Success "All configurations applied successfully!"
-    }
-}
+Success "All configurations applied successfully!"
 
 $ProgressPreference = $OriginalProgressPreference
 

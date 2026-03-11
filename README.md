@@ -11,19 +11,22 @@ My desktop setup configuration files for both **Windows** and ~~**Linux** (soon)
 
 ### 🚀 Apply configurations
 
-Run these commands in an **admin** PowerShell session to automatically install the required software and apply the configurations:
+Run this command in PowerShell to automatically install the required software and apply the configurations:
 
-```
-git clone https://github.com/madkarmaa/dotfiles --depth 1
-# windhawk, yasb, flowlauncher, powershell, fastfetch, cava, powertoys, all (defaults to all)
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ".\dotfiles\windows\scripts\apply.ps1 all"
+```powershell
+irm madkarma.top/dotfiles/win | iex
 ```
 
 ### 💻 Software
 
 - **[Wallpaper Engine](https://store.steampowered.com/app/431960)** (Steam)
-- **[Cava](https://github.com/karlstav/cava/releases/latest)**
 - **[AcrylicMenus](https://github.com/krlvm/AcrylicMenus/releases/latest)**
+
+- **[Cava](https://github.com/karlstav/cava)**
+
+```
+winget install -e --id karlstav.cava
+```
 
 - **[Windhawk](https://windhawk.net)**
 
