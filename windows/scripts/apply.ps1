@@ -171,6 +171,9 @@ function ApplyYasb {
     New-Symlink -Source "$PSScriptRoot\..\yasb" -Destination "$env:USERPROFILE\.config\yasb"
     TaskbarAutoHide -Enable $true
 
+    # start yasb if not running
+    yasbc.exe start | Out-Null
+
     # reload yasb or else the windows' top bar will be shown under it
     yasbc.exe reload | Out-Null
 
