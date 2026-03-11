@@ -265,24 +265,7 @@ function ApplyPowerToys {
     $item.LastWriteTimeUtc = $nowDt
     $item.LastAccessTimeUtc = $nowDt
 
-    # if powertoys settings is executed as admin, it'll re-launch as non-admin immediately
-    # which will trick Wait-Process into thinking it's done before the window is actually shown to the user
-    # so we open the settings via explorer.exe and try to intercept the process instead
-    Start-Process explorer.exe -ArgumentList "C:\Program Files\PowerToys\WinUI3Apps\PowerToys.Settings.exe"
-
-    Warning "Please restore the settings from the PowerToys Settings window that just opened, under General > Backup & Restore"
-    Warning "After restoring, close the PowerToys Settings window to continue..."
-
-    $RETRIES = 15
-    for ($i = 0; $i -lt $RETRIES; $i++) {
-        $proc = Get-Process -Name PowerToys.Settings -ErrorAction SilentlyContinue
-        if ($proc) {
-            $proc | Wait-Process
-            break
-        }
-        Start-Sleep -Seconds 1
-    }
-
+    Warning "Please restore the settings from the PowerToys Settings, under General > Backup & Restore"
     Success "PowerToys configuration applied"
 }
 
