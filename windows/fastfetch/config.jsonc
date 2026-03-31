@@ -1,6 +1,17 @@
 {
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
     "logo": {
+        "color": {
+            "1": "magenta",
+            "2": "magenta",
+            "3": "magenta",
+            "4": "magenta",
+            "5": "magenta",
+            "6": "magenta",
+            "7": "magenta",
+            "8": "magenta",
+            "9": "magenta",
+        },
         "padding": {
             "top": 1,
             "left": 4,
@@ -10,13 +21,16 @@
         "key": {
             "width": 15,
         },
-        "color": "yellow",
         "separator": ">",
     },
     "modules": [
         "break",
         {
             "type": "title",
+            "color": {
+                "user": "red",
+                "host": "blue",
+            },
             "format": "{user-name-colored}@{host-name-colored}",
         },
         "separator",
@@ -36,24 +50,24 @@
         {
             "type": "uptime",
             "key": "Uptime   ",
-            "keyColor": "magenta",
+            "keyColor": "yellow",
         },
         {
             "type": "cpu",
             "key": "CPU      ",
-            "keyColor": "magenta",
+            "keyColor": "yellow",
             "format": "{name} ({cores-logical})",
         },
         {
             "type": "gpu",
             "key": "GPU      ",
-            "keyColor": "magenta",
+            "keyColor": "yellow",
             "format": "{name}",
         },
         {
             "type": "memory",
             "key": "RAM      ",
-            "keyColor": "magenta",
+            "keyColor": "yellow",
             "format": "{used} / {total} {percentage}",
         },
         "break",
@@ -61,7 +75,7 @@
             "type": "disk",
             "key": "Disk     ",
             "keyColor": "red",
-            "format": "{#red}{mountpoint}{#} - {size-used} / {size-total} {size-percentage}",
+            "format": "{#yellow}{mountpoint}{#} - {size-used} / {size-total} {size-percentage}",
         },
         "break",
         {

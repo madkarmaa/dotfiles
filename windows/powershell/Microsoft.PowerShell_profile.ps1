@@ -17,8 +17,8 @@ function prompt {
     $currentDir = $(Get-Location).Path
     $currentDir = $currentDir.ToLower() -replace '^([a-z]):', '/$1' -replace '\\', '/'
 
-    Write-Host $currentDir -ForegroundColor Yellow
-    Write-Host "> " -NoNewline -ForegroundColor Yellow
+    Write-Host $currentDir -ForegroundColor Magenta
+    Write-Host "> " -NoNewline -ForegroundColor Cyan
 }
 
 fastfetch
