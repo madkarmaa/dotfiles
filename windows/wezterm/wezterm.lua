@@ -110,25 +110,49 @@ config.keys = {
         mods = 'CTRL',
         action = wezterm.action.CloseCurrentTab { confirm = false },
     },
+
     {
         key = 'UpArrow',
         mods = 'CTRL|ALT',
         action = wezterm.action.SplitPane { direction = 'Up' },
     },
     {
+        key = 'UpArrow',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.ActivatePaneDirection 'Up',
+    },
+
+    {
         key = 'DownArrow',
         mods = 'CTRL|ALT',
         action = wezterm.action.SplitPane { direction = 'Down' },
     },
+    {
+        key = 'DownArrow',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.ActivatePaneDirection 'Down',
+    },
+
     {
         key = 'LeftArrow',
         mods = 'CTRL|ALT',
         action = wezterm.action.SplitPane { direction = 'Left' },
     },
     {
+        key = 'LeftArrow',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.ActivatePaneDirection 'Left',
+    },
+
+    {
         key = 'RightArrow',
         mods = 'CTRL|ALT',
         action = wezterm.action.SplitPane { direction = 'Right' },
+    },
+    {
+        key = 'RightArrow',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.ActivatePaneDirection 'Right',
     },
 }
 
