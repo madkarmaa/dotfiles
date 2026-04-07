@@ -305,6 +305,16 @@ function ApplyFastfetch {
     Success 'Fastfetch configuration applied'
 }
 
+function ApplyWezTerm {
+    Info 'Installing WezTerm...'
+    WingetInstall -Id 'wez.wezterm'
+
+    Info 'Applying WezTerm configuration...'
+    New-Symlink -Source "$PSScriptRoot\..\wezterm\.wezterm.lua" -Destination "$env:USERPROFILE\.wezterm.lua"
+
+    Success 'WezTerm configuration applied'
+}
+
 function ApplyPowerToys {
     Info 'Installing PowerToys...'
     WingetInstall -Id 'Microsoft.PowerToys'
@@ -407,6 +417,7 @@ ApplyYasb
 ApplyFlowLauncher
 ApplyPowerShell
 ApplyFastfetch
+ApplyWezTerm
 ApplyCava
 ApplyPowerToys
 

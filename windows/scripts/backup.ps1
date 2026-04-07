@@ -35,7 +35,6 @@ function Backup-Path {
     return $true
 }
 
-# Track what was backed up
 $backedUp = @()
 $skipped = @()
 
@@ -144,6 +143,14 @@ if (Backup-Path "$env:USERPROFILE\.config\fastfetch\*" (New-Subdir 'fastfetch') 
 }
 else {
     $skipped += 'Fastfetch'
+}
+
+Info 'Backing up WezTerm...'
+if (Backup-Path "$env:USERPROFILE\.wezterm.lua" (Join-Path (New-Subdir 'wezterm') 'wezterm.lua')) {
+    $backedUp += 'WezTerm'
+}
+else {
+    $skipped += 'WezTerm'
 }
 
 Info 'Backing up Cava...'

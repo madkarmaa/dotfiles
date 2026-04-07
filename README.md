@@ -52,6 +52,12 @@ winget install -e --id Flow-Launcher.Flow-Launcher --source winget
 winget install -e --id Fastfetch-cli.Fastfetch --source winget
 ```
 
+- **[WezTerm](https://wezfurlong.org/wezterm/)**
+
+```
+winget install -e --id wez.wezterm --source winget
+```
+
 - **[PowerToys](https://learn.microsoft.com/en-us/windows/powertoys/install#install-with-windows-package-manager)**
 
 ```
