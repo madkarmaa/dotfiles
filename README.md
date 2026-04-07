@@ -52,7 +52,7 @@ winget install -e --id Flow-Launcher.Flow-Launcher --source winget
 winget install -e --id Fastfetch-cli.Fastfetch --source winget
 ```
 
-- **[WezTerm](https://wezfurlong.org/wezterm/)**
+- **[WezTerm](https://wezterm.org)**
 
 ```
 winget install -e --id wez.wezterm --source winget
@@ -67,26 +67,10 @@ winget install -e --id Microsoft.PowerToys --source winget
 ### 🖼️ Wallpaper
 - **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=2813599176)**
 
-### 🖥️ Windows Terminal color scheme
-
-**Get it [here](https://windowsterminalthemes.dev/?theme=OneDark)**.
-
-Learn how to install the color scheme **[here](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/color-schemes)**.
-
 ### 🎨 Windhawk mods
 
 Enable these mods (configuration will be applied automatically in the registry):
 
 ![Windhawk](./windows/images/windhawk.png)
-
-### ⚙️ PowerToys settings
-
-Paste this command in a **CMD** session to get the path of the Windows Terminal executable to paste in the "**App**" section:
-
-```
-where wt.exe
-```
-
-![PowerToys settings](./windows/images/powertoys.png)
 
 <small><i>First time ricing, I hope you like it :P</i></small>
