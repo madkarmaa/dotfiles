@@ -1,9 +1,13 @@
 My desktop setup configuration files for both **Windows** ~~and **Linux** (soon)~~
 
+---
+
 ## 🔤 Fonts
 
 - **[Fira Code](https://github.com/ryanoasis/nerd-fonts/releases/latest)**
 - **[JetBrains Mono](https://github.com/ryanoasis/nerd-fonts/releases/latest)**
+
+---
 
 ## 🪟 Windows
 
@@ -72,5 +76,7 @@ winget install -e --id Microsoft.PowerToys --source winget
 Enable these mods (configuration will be applied automatically in the registry):
 
 ![Windhawk](./windows/images/windhawk.png)
+
+---
 
 <small><i>First time ricing, I hope you like it :P</i></small>
