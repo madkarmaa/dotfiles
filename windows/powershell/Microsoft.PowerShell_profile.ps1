@@ -21,5 +21,5 @@ function prompt {
     Write-Host "> " -NoNewline -ForegroundColor Cyan
 }
 
-fastfetch
-Write-Host
+# fastfetch
+# Write-Host
