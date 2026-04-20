@@ -2,7 +2,7 @@
 method = noncurses
 
 [color]
-foreground = '#8858E0'
+foreground = '#d0c6b6'
 
 [smoothing]
 monstercat = 1

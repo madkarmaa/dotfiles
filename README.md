@@ -69,7 +69,7 @@ winget install -e --id Microsoft.PowerToys --source winget
 ```
 
 ### 🖼️ Wallpaper
-- **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=2813599176)**
+- **[Wallpaper Engine](https://steamcommunity.com/sharedfiles/filedetails/?id=3660348531)**
 
 ### 🎨 Windhawk mods
 
