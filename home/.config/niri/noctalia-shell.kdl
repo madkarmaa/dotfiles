@@ -1,0 +1,66 @@
+// Noctalia's dedicated Niri integration.
+// https://docs.noctalia.dev/noctalia/compositor-settings/niri/
+
+spawn-at-startup "noctalia"
+
+window-rule {
+    geometry-corner-radius 10
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+    open-floating true
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
+}
+
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
+
+// Blur setup from Noctalia's dedicated Niri documentation.
+window-rule {
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+layer-rule {
+    match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+    background-effect {
+        xray false
+    }
+}
+
+layer-rule {
+    match namespace="noctalia-window-switcher"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+blur {
+    passes 2
+    offset 3.0
+    noise 0.03
+    saturation 1.0
+}
+
+// Stationary wallpaper option from Noctalia's Niri documentation.
+layer-rule {
+    match namespace="^noctalia-wallpaper"
+    place-within-backdrop true
+}
+
+layout {
+    background-color "transparent"
+}
+
+overview {
+    workspace-shadow {
+        off
+    }
+}

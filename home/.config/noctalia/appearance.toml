@@ -1,0 +1,160 @@
+[bar.default]
+background_opacity = 0.8
+end = [ "group:end-spacing" ]
+margin_ends = 0
+radius_bottom_left = 10
+radius_bottom_right = 10
+radius_top_left = 0
+radius_top_right = 0
+start = [ "group:start-spacing" ]
+widget_spacing = 6
+
+    [[bar.default.capsule_group]]
+    id = "start-spacing"
+    members = [ "session", "workspaces" ]
+    opacity = 0.0
+    padding = 0
+    widget_spacing = 15
+
+    [[bar.default.capsule_group]]
+    id = "end-spacing"
+    members = [ "media", "tray", "network", "bluetooth", "volume", "brightness", "battery", "notifications" ]
+    opacity = 0.0
+    padding = 0
+    widget_spacing = 15
+
+[idle]
+behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
+pre_action_fade_seconds = 5
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = false
+    timeout = 295.0
+
+    [idle.behavior.lock-and-suspend]
+    action = "lock_and_suspend"
+    enabled = false
+    timeout = 900.0
+
+    [idle.behavior.screen-off]
+    action = "screen_off"
+    enabled = true
+    timeout = 300.0
+
+[lockscreen_widgets]
+enabled = false
+schema_version = 2
+widget_order = [ "lockscreen-login-box@eDP-2", "lockscreen-login-box@eDP-1" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 1089.5
+    cy = 1168.340576171875
+    output = "eDP-1"
+    placement_height = 1362.0
+    placement_width = 2179.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@eDP-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@eDP-2"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 1090.1383056640625
+    cy = 1129.6812744140625
+    output = "eDP-2"
+    placement_height = 1362.0
+    placement_width = 2179.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@eDP-2".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+[nightlight]
+enabled = true
+force = true
+temperature_night = 3300
+
+[notification]
+background_opacity = 0.8
+
+[osd]
+background_opacity = 0.8
+
+[shell]
+font_family = "Outfit"
+polkit_agent = true
+
+    [shell.panel]
+    transparency_mode = "glass"
+
+[theme]
+builtin = "Catppuccin"
+community_palette = "Catppuccin Mocha Lavender"
+mode = "dark"
+source = "community"
+wallpaper_scheme = "m3-content"
+
+[wallpaper]
+directory = "/usr/share/wallpapers"
+transition_on_startup = true
+
+    [wallpaper.default]
+    path = "/usr/share/wallpapers/walls-catppuccin-mocha/windows-xp.jpg"
+
+    [wallpaper.last]
+    path = "/usr/share/wallpapers/walls-catppuccin-mocha/windows-xp.jpg"
+
+    [wallpaper.monitors.eDP-1]
+    path = "/usr/share/wallpapers/walls-catppuccin-mocha/pine.jpg"
+
+    [wallpaper.monitors.eDP-2]
+    path = "/usr/share/wallpapers/walls-catppuccin-mocha/windows-xp.jpg"
+
+[widget.clock]
+format = "{:%H:%M:%S}"
+
+[widget.media]
+hide_when_no_media = true
+
+[widget.notifications]
+hide_when_no_unread = true
+
+[widget.workspaces]
+hide_when_empty = true

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+choice=$(
+    printf '%s\n' \
+        "Select region" \
+        "Focused screen" \
+        "Focused window" \
+        "All screens" |
+        vicinae dmenu --navigation-title "Screenshot" --placeholder "Choose capture mode"
+) || exit 0
+
+case "$choice" in
+    "Select region")
+        exec niri msg action screenshot
+        ;;
+    "Focused screen")
+        exec niri msg action screenshot-screen
+        ;;
+    "Focused window")
+        exec niri msg action screenshot-window
+        ;;
+    "All screens")
+        destination="$HOME/Pictures/Screenshots/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+        mkdir -p "$(dirname "$destination")"
+        exec grim "$destination"
+        ;;
+esac
