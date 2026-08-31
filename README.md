@@ -1,4 +1,4 @@
-My desktop setup configuration files for both **Windows** ~~and **Linux** (soon)~~
+My desktop setup configuration files for **Windows**.
 
 ---
 
